@@ -1,69 +1,20 @@
 from typing import List
 import re
-import requests
 from datetime import datetime, timedelta
 from .classes.day_schedule import DaySchedule
 from .utils.weekdays_obj import weekdays
 from .utils.get_time_list import get_time_list
 from .utils.clean_from_space import clean_from_space
 from .utils.clean_from_wierd import clean_from_wierd
+from parsers.vk_utils.get_post_list import get_post_list
+from parsers.vk_utils.get_post import get_post
+from parsers.vk_utils.get_date_list import get_date_list
 
 
 class Schedule:
     def __init__(self, figure_skating, hockey):
         self.figure_skating = figure_skating
         self.hockey = hockey
-
-
-def get_post_list():
-    API = 'https://api.vk.com/method/wall.get'
-    token = 'a0dbbc43a0dbbc43a0dbbc43a5a0b46d55aa0dba0dbbc43fe958607b4f11a2daf88c756'
-    version = 5.199
-    domain = 'arena_tr'
-
-    response = requests.get(
-        API,
-        params={
-            'access_token': token,
-            'v': version,
-            'domain': domain
-        }
-    )
-    data = response.json()['response']['items']
-    return data
-
-
-def get_post(post_list):
-    date_format = '%d.%m.%Y'
-    date_now = datetime.now().strftime(date_format)
-    date_now = datetime.strptime(date_now, date_format)
-    filtered = filter(lambda x: 'Массовое катание' in x['text'], post_list)
-    post_list_filtered = list(filtered)
-    for post in post_list_filtered:
-        text = clean_from_space(post['text'])
-        text = clean_from_wierd(text)
-        text = text.lower()
-        date_list = get_date_list(text)
-        # NOTE здесь можно отфильтровать расписание на будущую неделю
-        if date_now in date_list:
-            # TODO возвращать text
-            return post
-
-
-def get_date_list(text: str):
-    date_list = []
-    current_year = str(datetime.now().year)
-    format_pattern = '%d.%m.%Y'
-    period_pattern = r'расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n)'
-    match = re.search(period_pattern, text)
-    if match:
-        end_date = datetime.strptime(match.group(3) + '.' + current_year, format_pattern)
-        start_date = datetime.strptime(f'{match.group(2)}.{end_date.year}', format_pattern)
-        current_date = start_date
-        while current_date <= end_date:
-            date_list.append(current_date)
-            current_date += timedelta(days=1)
-    return date_list
 
 
 def get_clean_list(string):
@@ -97,7 +48,7 @@ def get_skating_string(text):
 def get_time_list_all(string, date_list):
     time_list_all = []
     week_day_group_pattern = r'^\s*(\w{2}):'
-    week_day_compile = re.compile(week_day_group_pattern)
+    week_day_compile = re.compile(week_day_group_pattern, )
     clean_list = get_clean_list(string)
     for item in clean_list:
         match = re.search(week_day_group_pattern, item)
@@ -117,13 +68,15 @@ def get_day_schedule_list(sport_string: str, date_list: List[datetime]):
 
 
 def get_tr_day_schedule_list():
-    post_list = get_post_list()
-    post = get_post(post_list)
+    schedule_key_word = 'Массовое катание'
+    period_pattern = r'расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n)'
+    post_list = get_post_list('arena_tr')
+    post = get_post(post_list, schedule_key_word, period_pattern)
     if post is not None:
         text = clean_from_space(post['text'])
         text = clean_from_wierd(text)
         text = text.lower()
-        date_list = get_date_list(text)
+        date_list = get_date_list(text, period_pattern)
         skating_string = get_skating_string(text)
         day_schedule_list = get_day_schedule_list(skating_string, date_list)
         return day_schedule_list
