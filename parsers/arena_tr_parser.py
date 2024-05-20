@@ -63,7 +63,7 @@ def get_time_list_all(string, date_list):
 
 def get_day_schedule_list(sport_string: str, date_list: List[datetime]):
     time_list_all = get_time_list_all(sport_string, date_list)
-    day_schedule_list = list(map(lambda x: DaySchedule(x[0], x), time_list_all))
+    day_schedule_list = list(map(lambda x: DaySchedule(x[0].replace(hour=0, minute=0), x), time_list_all))
     return day_schedule_list
 
 
