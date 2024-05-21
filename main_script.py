@@ -2,6 +2,7 @@ from typing import List
 import mysql.connector
 import json
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 from parsers.arena_tr_parser import get_tr_day_schedule_list
 from parsers.ice_palace_parser import get_ice_palace_day_schedule_list
@@ -47,6 +48,7 @@ def create_connection(dbname, user, password, host, port):
 
 
 def request_insert_current_schedule(conn, sporttype_id: int, arena: Arena, schedule: str):
+    date_now = datetime.now().strftime('%d.%m.%Y %H:%M')
     sql_insert_schedule = """
     insert into CurrentSchedule (sporttype_id, arena_id, json_schedule)
     values (%s, %s, %s)
@@ -56,8 +58,12 @@ def request_insert_current_schedule(conn, sporttype_id: int, arena: Arena, sched
         cur.execute(sql_insert_schedule, (sporttype_id, arena.value, schedule))
         conn.commit()
         print(f'Arena: {arena.name} data successfully insert')
+        with open('parser.log', 'a') as file:
+            file.write(f'date: {date_now} Arena: {arena.name} data successfully insert \n')
     except mysql.connector.Error as e:
         print(e)
+        with open('parser.log', 'a') as file:
+            file.write(f'date: {date_now}{e} \n')
 
 
 def encode_to_json(schedule):
@@ -77,6 +83,7 @@ def insert_current_schedule(conn, get_schedule_func, arena_id, sporttype_id=1):
 
 
 def init():
+    date_now = datetime.now().strftime('%d.%m.%Y %H:%M')
     dbname = os.getenv('SCHEDULE_DBNAME')
     user = os.getenv('SCHEDULE_USERNAME')
     password = os.getenv('SCHEDULE_PASSWORD')
@@ -84,6 +91,8 @@ def init():
     port = 3306
     conn = create_connection(dbname, user, password, host, port)
     if conn is not None:
+        with open('parser.log', 'a') as file:
+            file.write(f'=========== {date_now} =========== \n')
         insert_current_schedule(conn, get_arena_led_2_day_schedule_list, Arena.ARENA_LED_2)
         insert_current_schedule(conn, get_stachek_iceberg_schedule_list, Arena.STACHEK_ICEBERG)
         insert_current_schedule(conn, get_tr_day_schedule_list, Arena.TR)
