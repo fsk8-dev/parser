@@ -1,12 +1,11 @@
 import re
 from datetime import datetime
 from .classes.day_schedule import DaySchedule
-from .utils.clean_from_space import clean_from_space
-from .utils.clean_from_wierd import clean_from_wierd
 from .utils.get_time_obj import get_time_obj
 from .vk_utils.get_post_list import get_post_list
 from .vk_utils.get_post import get_post
-from .vk_utils.get_date_list import get_date_list
+from .classes.arena_name import Arena
+from .classes.arena_schedule import ArenaSchedule
 
 
 def get_day_schedule_list(text, sport_schedule_pattern):
@@ -29,14 +28,24 @@ def get_day_schedule_list(text, sport_schedule_pattern):
     return day_schedule_list
 
 
+def get_arena_schedule_list(post, skating_schedule_pattern):
+    arena_schedule_list = []
+    if post is not None:
+        day_schedule_list = get_day_schedule_list(post, skating_schedule_pattern)
+    else:
+        day_schedule_list = []
+    arena_schedule = ArenaSchedule(Arena.STACHEK_ICEBERG, day_schedule_list)
+    arena_schedule_list.append(arena_schedule)
+    return arena_schedule_list
+
+
 def get_stachek_iceberg_schedule_list():
-    schedule_key_word = 'Расписание сеансов'
     period_pattern = r'расписание.*?((\d{2}\.\d{2}).*?(\d{2}\.\d{2})).*(?=\n)'
     skating_schedule_pattern = r'(\d{1,2}\.\d{1,2}).*\nмассовоекатание.*\n((\d{1,2}:\d{1,2}-\d{1,2}:\d{1,2}\n){0,})'
     post_list = get_post_list('icebergkatok')
-    post = get_post(post_list, schedule_key_word, period_pattern)
-    day_schedule_list = get_day_schedule_list(post, skating_schedule_pattern)
-    return day_schedule_list
+    post = get_post(post_list, period_pattern)
+    arena_schedule_list = get_arena_schedule_list(post, skating_schedule_pattern)
+    return arena_schedule_list
 
 
 

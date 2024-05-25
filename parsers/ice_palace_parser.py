@@ -6,6 +6,8 @@ from datetime import datetime
 from .classes.day_schedule import DaySchedule
 from .utils.months_obj import months_obj
 from .utils.get_time_list import get_time_list
+from parsers.classes.arena_name import Arena
+from parsers.classes.arena_schedule import ArenaSchedule
 
 # TODO использовать clean_from_space()
 
@@ -83,14 +85,21 @@ def get_day_schedule_list(data_list: List[str]):
     return schedule_list
 
 
-def get_ice_palace_day_schedule_list():
+def get_arena_schedule_list(data_list: List[str]):
+    arena_schedule_list = []
+    day_schedule_list = get_day_schedule_list(data_list)
+    arena_schedule_list.append(ArenaSchedule(Arena.ICE_PALACE, day_schedule_list))
+    return arena_schedule_list
+
+
+def get_ice_palace_schedule_list():
     url = 'https://newarena.spb.ru/rink/'
     request = requests.get(url)
     text = request.text
     soup = BeautifulSoup(text, 'lxml')
     data_list = get_data_list(soup)
-    day_schedule_list = get_day_schedule_list(data_list)
-    return day_schedule_list
+    arena_schedule_list = get_arena_schedule_list(data_list)
+    return arena_schedule_list
 
 
 

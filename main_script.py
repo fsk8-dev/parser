@@ -4,11 +4,11 @@ import json
 import os
 from datetime import datetime
 from dotenv import load_dotenv
-from parsers.arena_tr_parser import get_tr_day_schedule_list
-from parsers.ice_palace_parser import get_ice_palace_day_schedule_list
-from parsers.jubi_parser import get_jubi_day_schedule_list
-from parsers.kanon_parser import get_kanon_day_schedule_list
-from parsers.tavr_parser import get_tavr_day_schedule_list
+from parsers.arena_tr_parser import get_tr_schedule_list
+from parsers.ice_palace_parser import get_ice_palace_schedule_list
+from parsers.jubi_parser import get_jubi_schedule_list
+from parsers.kanon_parser import get_kanon_schedule_list
+from parsers.tavr_parser import get_tavr_schedule_list
 from parsers.stachek_iceberg import get_stachek_iceberg_schedule_list
 from parsers.arena_led import get_arena_led_schedule_list
 from parsers.classes.arena_name import Arena
@@ -63,7 +63,7 @@ def encode_to_json(schedule):
     return json_list
 
 
-def insert_current_schedule(conn, get_schedule_func, arena_id, sporttype_id=1):
+def insert_current_schedule(conn, get_schedule_func, sporttype_id=1):
     schedule_arena_list = get_schedule_func()
     for schedule_arena in schedule_arena_list:
         schedule = schedule_arena.arena_schedule
@@ -84,13 +84,13 @@ def init():
         with open('parser.log', 'a') as file:
             file.write(f'=========== {date_now} =========== \n')
 
-        insert_current_schedule(conn, get_arena_led_schedule_list, Arena.ARENA_LED_2)
-        insert_current_schedule(conn, get_stachek_iceberg_schedule_list, Arena.STACHEK_ICEBERG)
-        insert_current_schedule(conn, get_tr_day_schedule_list, Arena.TR)
-        insert_current_schedule(conn, get_ice_palace_day_schedule_list, Arena.ICE_PALACE)
-        insert_current_schedule(conn, get_jubi_day_schedule_list, Arena.JUBI_BASE)
-        insert_current_schedule(conn, get_kanon_day_schedule_list, Arena.GRAND_KANON)
-        insert_current_schedule(conn, get_tavr_day_schedule_list, Arena.TAVR)
+        insert_current_schedule(conn, get_tr_schedule_list)
+        insert_current_schedule(conn, get_stachek_iceberg_schedule_list)
+        insert_current_schedule(conn, get_arena_led_schedule_list)
+        insert_current_schedule(conn, get_ice_palace_schedule_list)
+        insert_current_schedule(conn, get_jubi_schedule_list)
+        insert_current_schedule(conn, get_kanon_schedule_list)
+        insert_current_schedule(conn, get_tavr_schedule_list)
         conn.close()
 
 
