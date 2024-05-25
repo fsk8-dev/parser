@@ -10,21 +10,8 @@ from parsers.jubi_parser import get_jubi_day_schedule_list
 from parsers.kanon_parser import get_kanon_day_schedule_list
 from parsers.tavr_parser import get_tavr_day_schedule_list
 from parsers.stachek_iceberg import get_stachek_iceberg_schedule_list
-from parsers.arena_led_2 import get_arena_led_2_day_schedule_list
-from enum import Enum
-
-
-class Arena(Enum):
-    TR = 1
-    JUBI_BASE = 8
-    TAVR = 5
-    ICE_PALACE = 6
-    GRAND_KANON = 7
-    STACHEK_ICEBERG = 9
-    ARENA_LED_2 = 10
-    ARENA_LED_3 = 11
-    ARENA_LED_4 = 12
-
+from parsers.arena_led import get_arena_led_schedule_list
+from parsers.classes.arena_name import Arena
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
@@ -77,9 +64,12 @@ def encode_to_json(schedule):
 
 
 def insert_current_schedule(conn, get_schedule_func, arena_id, sporttype_id=1):
-    schedule = get_schedule_func()
-    json_schedule = encode_to_json(schedule)
-    request_insert_current_schedule(conn, sporttype_id, arena_id, json_schedule)
+    schedule_arena_list = get_schedule_func()
+    for schedule_arena in schedule_arena_list:
+        schedule = schedule_arena.arena_schedule
+        arena_id = schedule_arena.arena_name
+        json_schedule = encode_to_json(schedule)
+        request_insert_current_schedule(conn, sporttype_id, arena_id, json_schedule)
 
 
 def init():
@@ -94,7 +84,7 @@ def init():
         with open('parser.log', 'a') as file:
             file.write(f'=========== {date_now} =========== \n')
 
-        insert_current_schedule(conn, get_arena_led_2_day_schedule_list, Arena.ARENA_LED_2)
+        insert_current_schedule(conn, get_arena_led_schedule_list, Arena.ARENA_LED_2)
         insert_current_schedule(conn, get_stachek_iceberg_schedule_list, Arena.STACHEK_ICEBERG)
         insert_current_schedule(conn, get_tr_day_schedule_list, Arena.TR)
         insert_current_schedule(conn, get_ice_palace_day_schedule_list, Arena.ICE_PALACE)
