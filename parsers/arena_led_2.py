@@ -42,10 +42,9 @@ def get_date_period(text):
 def get_day_schedule_list(html_list: List[BeautifulSoup]):
     schedule_list = []
     current_year = datetime.now().year
-    day_pattern = r'([а-я]{5,11}.*\n(массовыекатания:\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*))'
+    day_pattern = r'([а-я]{5,11}.*\n(массовыекатания.*?\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*))'
     time_list_pattern = r'((\d{2}.\d{2}-\d{2}.\d{2}).*\n)'
     for html_arena in html_list:
-        a = []
         text_arena = get_text_arena(html_arena)
         arena_name = find_out_arena_name(text_arena)
         date_period = get_date_period(text_arena)
@@ -55,14 +54,11 @@ def get_day_schedule_list(html_list: List[BeautifulSoup]):
         for day in day_list:
             match = next((m for m in matches if days_of_week_full[day.weekday()] in m[0]), None)
             if match:
-                t = re.findall(time_list_pattern, match[2])
                 time_list = list(map(lambda x: x[1], re.findall(time_list_pattern, match[1])))
                 time_string = ';'.join(time_list).replace('.', ':')
                 time_list = get_time_list(time_string, day)
                 info = DaySchedule(day, time_list)
                 schedule_list.append(info)
-                a.append(info)
-        print(a)
     return schedule_list
 
 

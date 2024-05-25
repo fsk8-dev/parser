@@ -69,18 +69,15 @@ def get_day_schedule_list(sport_string: str, date_list: List[datetime]):
 
 def get_tr_day_schedule_list():
     schedule_key_word = 'Массовое катание'
-    period_pattern = r'расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n)'
+    period_pattern = r'(расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n))|расписание.*?(\d{2}\.\d{2})'
     post_list = get_post_list('arena_tr')
     post = get_post(post_list, schedule_key_word, period_pattern)
     if post is not None:
-        text = clean_from_space(post['text'])
-        text = clean_from_wierd(text)
-        text = text.lower()
-        date_list = get_date_list(text, period_pattern)
-        skating_string = get_skating_string(text)
+        date_list = get_date_list(post, period_pattern)
+        skating_string = get_skating_string(post)
         day_schedule_list = get_day_schedule_list(skating_string, date_list)
         return day_schedule_list
     else:
-        return None
+        return []
 
 # ([а-яА-Я]{2}):(\d{1,2}:\d{2}-\d{1,2}:\d{2}[.,\n\r])*

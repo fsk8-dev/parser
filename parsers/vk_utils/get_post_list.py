@@ -11,7 +11,7 @@ def get_post_list(domain: str):
         params={
             'access_token': token,
             'v': version,
-            'domain': domain
+            'domain': domain,
         }
     )
     data = response.json()['response']['items']

@@ -93,16 +93,15 @@ def init():
     if conn is not None:
         with open('parser.log', 'a') as file:
             file.write(f'=========== {date_now} =========== \n')
-            test = get_arena_led_2_day_schedule_list()
-            f = 0
-        # insert_current_schedule(conn, get_arena_led_2_day_schedule_list, Arena.ARENA_LED_2)
-        # insert_current_schedule(conn, get_stachek_iceberg_schedule_list, Arena.STACHEK_ICEBERG)
-        # insert_current_schedule(conn, get_tr_day_schedule_list, Arena.TR)
-        # insert_current_schedule(conn, get_ice_palace_day_schedule_list, Arena.ICE_PALACE)
-        # insert_current_schedule(conn, get_jubi_day_schedule_list, Arena.JUBI_BASE)
-        # insert_current_schedule(conn, get_kanon_day_schedule_list, Arena.GRAND_KANON)
-        # insert_current_schedule(conn, get_tavr_day_schedule_list, Arena.TAVR)
-        # conn.close()
+
+        insert_current_schedule(conn, get_arena_led_2_day_schedule_list, Arena.ARENA_LED_2)
+        insert_current_schedule(conn, get_stachek_iceberg_schedule_list, Arena.STACHEK_ICEBERG)
+        insert_current_schedule(conn, get_tr_day_schedule_list, Arena.TR)
+        insert_current_schedule(conn, get_ice_palace_day_schedule_list, Arena.ICE_PALACE)
+        insert_current_schedule(conn, get_jubi_day_schedule_list, Arena.JUBI_BASE)
+        insert_current_schedule(conn, get_kanon_day_schedule_list, Arena.GRAND_KANON)
+        insert_current_schedule(conn, get_tavr_day_schedule_list, Arena.TAVR)
+        conn.close()
 
 
 init()

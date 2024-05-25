@@ -35,10 +35,7 @@ def get_stachek_iceberg_schedule_list():
     skating_schedule_pattern = r'(\d{1,2}\.\d{1,2}).*\nмассовоекатание.*\n((\d{1,2}:\d{1,2}-\d{1,2}:\d{1,2}\n){0,})'
     post_list = get_post_list('icebergkatok')
     post = get_post(post_list, schedule_key_word, period_pattern)
-    text = clean_from_space(post['text'])
-    text = clean_from_wierd(text)
-    text = text.lower()
-    day_schedule_list = get_day_schedule_list(text, skating_schedule_pattern)
+    day_schedule_list = get_day_schedule_list(post, skating_schedule_pattern)
     return day_schedule_list
 
 
