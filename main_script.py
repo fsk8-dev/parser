@@ -10,6 +10,7 @@ from parsers.jubi_parser import get_jubi_day_schedule_list
 from parsers.kanon_parser import get_kanon_day_schedule_list
 from parsers.tavr_parser import get_tavr_day_schedule_list
 from parsers.stachek_iceberg import get_stachek_iceberg_schedule_list
+from parsers.arena_led_2 import get_arena_led_2_day_schedule_list
 from enum import Enum
 
 
@@ -20,6 +21,9 @@ class Arena(Enum):
     ICE_PALACE = 6
     GRAND_KANON = 7
     STACHEK_ICEBERG = 9
+    ARENA_LED_2 = 10
+    ARENA_LED_3 = 11
+    ARENA_LED_4 = 12
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -89,6 +93,8 @@ def init():
     if conn is not None:
         with open('parser.log', 'a') as file:
             file.write(f'=========== {date_now} =========== \n')
+
+        insert_current_schedule(conn, get_arena_led_2_day_schedule_list, Arena.ARENA_LED_2)
         insert_current_schedule(conn, get_stachek_iceberg_schedule_list, Arena.STACHEK_ICEBERG)
         insert_current_schedule(conn, get_tr_day_schedule_list, Arena.TR)
         insert_current_schedule(conn, get_ice_palace_day_schedule_list, Arena.ICE_PALACE)
