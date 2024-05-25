@@ -4,6 +4,8 @@ from datetime import datetime
 from .classes.day_schedule import DaySchedule
 from .utils.months_obj import months_obj
 from .utils.get_time_obj import get_time_obj
+from parsers.classes.arena_name import Arena
+from parsers.classes.arena_schedule import ArenaSchedule
 
 
 def get_date(data):
@@ -37,13 +39,20 @@ def get_day_schedule_list(data_list):
     return day_schedule_list
 
 
-def get_jubi_day_schedule_list():
+def get_arena_schedule_list(data_list):
+    arena_schedule_list = []
+    day_schedule_list = get_day_schedule_list(data_list)
+    arena_schedule_list.append(ArenaSchedule(Arena.JUBI_BASE, day_schedule_list))
+    return arena_schedule_list
+
+
+def get_jubi_schedule_list():
     url = 'https://www.yubi.ru/afisha/katok/'
     response = requests.get(url)
     text = response.text
     soup = BeautifulSoup(text, 'lxml')
     data_list_raw = soup.find_all('div', class_='skat_item_cont')
-    day_schedule_list = get_day_schedule_list(data_list_raw)
-    return day_schedule_list
+    arena_schedule_list = get_arena_schedule_list(data_list_raw)
+    return arena_schedule_list
 
 

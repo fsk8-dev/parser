@@ -5,6 +5,8 @@ from datetime import datetime
 from .classes.day_schedule import DaySchedule
 from .utils.get_time_obj import get_time_obj
 from .utils.get_time_string import get_time_string
+from parsers.classes.arena_name import Arena
+from parsers.classes.arena_schedule import ArenaSchedule
 
 
 def get_date_list(schedule_table):
@@ -40,7 +42,14 @@ def get_day_schedule_list(time_list):
     return day_schedule_list
 
 
-def get_tavr_day_schedule_list():
+def get_arena_schedule_list(time_list):
+    arena_schedule_list = []
+    day_schedule_list = get_day_schedule_list(time_list)
+    arena_schedule_list.append(ArenaSchedule(Arena.TAVR, day_schedule_list))
+    return arena_schedule_list
+
+
+def get_tavr_schedule_list():
     url = 'http://www.tavrsad.com/index.php?s=19'
     response = requests.get(url)
     html_text = response.text
@@ -48,8 +57,8 @@ def get_tavr_day_schedule_list():
     schedule_table = soup.body.find('table',  height="290", width="700")
     date_list = get_date_list(schedule_table)
     time_list = get_time_list(schedule_table, date_list)
-    day_schedule_list = get_day_schedule_list(time_list)
-    return day_schedule_list
+    arena_schedule_list = get_arena_schedule_list(time_list)
+    return arena_schedule_list
 
 
 

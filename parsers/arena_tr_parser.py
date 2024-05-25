@@ -4,11 +4,11 @@ from datetime import datetime, timedelta
 from .classes.day_schedule import DaySchedule
 from .utils.weekdays_obj import weekdays
 from .utils.get_time_list import get_time_list
-from .utils.clean_from_space import clean_from_space
-from .utils.clean_from_wierd import clean_from_wierd
 from parsers.vk_utils.get_post_list import get_post_list
 from parsers.vk_utils.get_post import get_post
 from parsers.vk_utils.get_date_list import get_date_list
+from parsers.classes.arena_name import Arena
+from parsers.classes.arena_schedule import ArenaSchedule
 
 
 class Schedule:
@@ -67,17 +67,25 @@ def get_day_schedule_list(sport_string: str, date_list: List[datetime]):
     return day_schedule_list
 
 
-def get_tr_day_schedule_list():
-    schedule_key_word = 'Массовое катание'
-    period_pattern = r'(расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n))|расписание.*?(\d{2}\.\d{2})'
-    post_list = get_post_list('arena_tr')
-    post = get_post(post_list, schedule_key_word, period_pattern)
+def get_arena_schedule_list(post, period_pattern):
+    arena_schedule_list = []
     if post is not None:
         date_list = get_date_list(post, period_pattern)
         skating_string = get_skating_string(post)
         day_schedule_list = get_day_schedule_list(skating_string, date_list)
-        return day_schedule_list
     else:
-        return []
+        day_schedule_list = []
+    arena_schedule = ArenaSchedule(Arena.TR, day_schedule_list)
+    arena_schedule_list.append(arena_schedule)
+    return arena_schedule_list
+
+
+def get_tr_schedule_list():
+    period_pattern = r'(расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n))|расписание.*?(\d{2}\.\d{2})'
+    post_list = get_post_list('arena_tr')
+    post = get_post(post_list, period_pattern)
+    arena_schedule_list = get_arena_schedule_list(post, period_pattern)
+    return arena_schedule_list
+
 
 # ([а-яА-Я]{2}):(\d{1,2}:\d{2}-\d{1,2}:\d{2}[.,\n\r])*
