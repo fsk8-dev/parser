@@ -16,7 +16,13 @@ def get_date_list(schedule_table):
         td_list = tr_list[2].find_all('td')
         for td in td_list:
             date_string = td.text.strip()
-            date_list.append(datetime.strptime(f'{date_string}.{datetime.now().year}', '%d.%m.%Y'))
+            # TODO переделать, чтобы не было ошибки в с случае если новый год наступает в середине недели
+            try:
+                date = datetime.strptime(f'{date_string}.{datetime.now().year}', '%d.%m.%Y')
+                date_list.append(date)
+            except Exception as e:
+                date_list.append(datetime(1, 1, 1))
+                print(e)  # TODO записать в лог
     return date_list
 
 

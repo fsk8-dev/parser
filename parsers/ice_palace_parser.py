@@ -6,18 +6,14 @@ from datetime import datetime
 from .classes.day_schedule import DaySchedule
 from .utils.months_obj import months_obj
 from .utils.get_time_list import get_time_list
+from .utils.clean_from_space import clean_from_space
 from parsers.classes.arena_name import Arena
 from parsers.classes.arena_schedule import ArenaSchedule
-
-# TODO использовать clean_from_space()
 
 
 def get_data_list(soup):
     data_list = []
-    text = (soup.text.replace(' ', '')
-                .replace(r'&nbs;', '')
-                .replace('\u00A0', '')
-                .replace('\xa0', ''))
+    text = clean_from_space(soup.text)
     pattern = r'((\d{1,2}-)?\d{1,2}[а-яА-Я]{3,9}:(\d{1,2}\s*:\s*\d{2}-\d{1,2}\s*:\s*\d{2}\s*;)*).*?'
     matches = re.findall(pattern, text)
     for match in matches:
