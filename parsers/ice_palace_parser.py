@@ -27,7 +27,7 @@ def get_data_list(soup):
 
 
 def is_date_period(string: str):
-    pattern = r'\d{2}\s*-\s*\d{2}\s*[а-я]{1,8}'
+    pattern = r'\d{1,2}\s*-\s*\d{1,2}\s*[а-я]{1,8}'
     if re.search(pattern, string):
         return True
     else:
