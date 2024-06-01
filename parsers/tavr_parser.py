@@ -66,7 +66,7 @@ def get_tavr_schedule_list():
     schedule_table = soup.body.find('table',  height="290", width="700")
     date_period = get_date_period(schedule_table)
     if date_period:
-        date_list = get_date_list(date_period['period_start'], date_period['period_end'])
+        date_list = get_date_list(date_period.period_start, date_period.period_end)
         time_list = get_time_list(schedule_table, date_list)
         arena_schedule_list = get_arena_schedule_list(time_list)
     else:

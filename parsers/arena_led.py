@@ -1,8 +1,8 @@
 import re
-from typing import List
+from typing import List, Optional
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+
 from .classes.day_schedule import DaySchedule
 from .utils.get_time_list import get_time_list
 from .utils.format_date_period import format_date_period
@@ -12,6 +12,7 @@ from .utils.months_obj import months_obj
 from .utils.days_of_week_full import days_of_week_full
 from .classes.arena_name import Arena
 from .classes.arena_schedule import ArenaSchedule
+from .classes.date_period import DatePeriod
 
 
 arena_reducer_name = {
@@ -40,7 +41,7 @@ def find_out_arena_name(text_arena):
     return None
 
 
-def get_date_period(text):
+def get_date_period(text) -> Optional[DatePeriod]:
     date_period_pattern = r'((\d{2})([а-я]{1,8}.*?))по((\d{2})([а-я]{1,8}.*?))'
     match = re.search(date_period_pattern, text)
     if match:
@@ -54,12 +55,12 @@ def get_date_period(text):
         return None
 
 
-def get_day_schedule_list(date_period, text_arena: str):
+def get_day_schedule_list(date_period: DatePeriod, text_arena: str):
     schedule_list = []
     day_pattern = r'([а-я]{5,11}.*\n(массовыекатания.*?\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*))'
     time_list_pattern = r'((\d{2}.\d{2}-\d{2}.\d{2}).*\n)'
 
-    day_list = create_day_list_from_period(date_period['period_start'], date_period['period_end'])
+    day_list = create_day_list_from_period(date_period.period_start, date_period.period_end)
     matches = re.findall(day_pattern, text_arena)
     if matches:
         for day in day_list:
