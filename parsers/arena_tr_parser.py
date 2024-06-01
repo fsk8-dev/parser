@@ -1,6 +1,6 @@
 from typing import List
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 from .classes.day_schedule import DaySchedule
 from .utils.weekdays_obj import weekdays
 from .utils.get_time_list import get_time_list
@@ -15,6 +15,8 @@ class Schedule:
     def __init__(self, figure_skating, hockey):
         self.figure_skating = figure_skating
         self.hockey = hockey
+
+# TODO заменить на clean_from_space
 
 
 def get_clean_list(string):

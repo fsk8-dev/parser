@@ -1,29 +1,15 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 from .classes.day_schedule import DaySchedule
 from .utils.get_time_obj import get_time_obj
 from .utils.get_time_string import get_time_string
 from parsers.classes.arena_name import Arena
 from parsers.classes.arena_schedule import ArenaSchedule
-
-
-def get_date_list(schedule_table):
-    date_list = []
-    tr_list = schedule_table.find_all('tr')
-    if len(tr_list) > 2:
-        td_list = tr_list[2].find_all('td')
-        for td in td_list:
-            date_string = td.text.strip()
-            # TODO переделать, чтобы не было ошибки в с случае если новый год наступает в середине недели
-            try:
-                date = datetime.strptime(f'{date_string}.{datetime.now().year}', '%d.%m.%Y')
-                date_list.append(date)
-            except Exception as e:
-                date_list.append(datetime(1, 1, 1))
-                print(e)  # TODO записать в лог
-    return date_list
+from .utils.clean_from_space import clean_from_space
+from .utils.clean_from_row import clean_from_row
+from .utils.get_date_period import get_date_period
+from parsers.utils.get_date_list import get_date_list
 
 
 def get_time_list(schedule_table, date_list):
@@ -55,16 +41,24 @@ def get_arena_schedule_list(time_list):
     return arena_schedule_list
 
 
+def get_date_period_local(schedule_table):
+    td_date = schedule_table.find('td', {'colspan': '7', 'style': 'text-align: center;'})
+    td_text = td_date.text
+    date_string = clean_from_space(clean_from_row(td_text.replace('Расписание катаний', '')))
+    date_period = get_date_period(date_string)
+    return date_period
+
+
 def get_tavr_schedule_list():
     url = 'http://www.tavrsad.com/index.php?s=19'
     response = requests.get(url)
-    html_text = response.text
-    soup = BeautifulSoup(html_text, 'html.parser')
+    soup = BeautifulSoup(response.content, 'html.parser')
     schedule_table = soup.body.find('table',  height="290", width="700")
-    date_list = get_date_list(schedule_table)
-    time_list = get_time_list(schedule_table, date_list)
-    arena_schedule_list = get_arena_schedule_list(time_list)
+    date_period = get_date_period_local(schedule_table)
+    if date_period:
+        date_list = get_date_list(date_period['period_start'], date_period['period_end'])
+        time_list = get_time_list(schedule_table, date_list)
+        arena_schedule_list = get_arena_schedule_list(time_list)
+    else:
+        arena_schedule_list = get_arena_schedule_list([])
     return arena_schedule_list
-
-
-

@@ -18,5 +18,6 @@ def clean_from_space(text: str) -> str:
     # Remove Unicode spaces
     text_clean = text_clean.replace('\u00A0', '')
     text_clean = text_clean.replace('\xa0', '')
+    text_clean = text_clean.replace('\t', '')
 
     return text_clean

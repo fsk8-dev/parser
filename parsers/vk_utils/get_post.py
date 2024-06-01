@@ -1,9 +1,9 @@
 from typing import List, Optional
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 from ..utils.clean_from_space import clean_from_space
 from ..utils.clean_from_wierd import clean_from_wierd
-from .get_date_list import get_date_list
+from parsers.vk_utils.get_date_list import get_date_list
 
 
 def clear_text(text):
