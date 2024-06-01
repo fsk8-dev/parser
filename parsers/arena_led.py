@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from .classes.day_schedule import DaySchedule
 from .utils.get_time_list import get_time_list
+from .utils.format_date_period import format_date_period
 from .utils.clean_from_space import clean_from_space
 from .utils.create_day_list_from_period import create_day_list_from_period
 from .utils.months_obj import months_obj
@@ -12,9 +13,6 @@ from .utils.days_of_week_full import days_of_week_full
 from .classes.arena_name import Arena
 from .classes.arena_schedule import ArenaSchedule
 
-
-# TODO использовать get_date_period
-# TODO try execute
 
 arena_reducer_name = {
     'расписаниелед2': Arena.ARENA_LED_2,
@@ -43,45 +41,49 @@ def find_out_arena_name(text_arena):
 
 
 def get_date_period(text):
-    date_period = {'period_start': None, 'period_end': None}
-    period_pattern = r'((\d{2})([а-я]{1,8}.*?))по((\d{2})([а-я]{1,8}.*?))'
-    match = re.search(period_pattern, text)
+    date_period_pattern = r'((\d{2})([а-я]{1,8}.*?))по((\d{2})([а-я]{1,8}.*?))'
+    match = re.search(date_period_pattern, text)
     if match:
-        date_period['period_start'] = datetime(datetime.now().year, months_obj[match[3]], int(match[2]))
-        date_period['period_end'] = datetime(datetime.now().year, months_obj[match[6]], int(match[5]))
-    return date_period
+        month_period_start = months_obj[match[3]]
+        day_period_start = int(match[2])
+        month_period_end = months_obj[match[6]]
+        day_period_end = int(match[5])
+        date_period = format_date_period(month_period_start, day_period_start, month_period_end, day_period_end)
+        return date_period
+    else:
+        return None
 
 
-def get_day_schedule_list(html_arena):
+def get_day_schedule_list(date_period, text_arena: str):
     schedule_list = []
     day_pattern = r'([а-я]{5,11}.*\n(массовыекатания.*?\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*))'
     time_list_pattern = r'((\d{2}.\d{2}-\d{2}.\d{2}).*\n)'
-    text_arena = get_text_arena(html_arena)
-    arena_name = find_out_arena_name(text_arena)
-    date_period = get_date_period(text_arena)
+
     day_list = create_day_list_from_period(date_period['period_start'], date_period['period_end'])
     matches = re.findall(day_pattern, text_arena)
-    for day in day_list:
-        match = next((m for m in matches if days_of_week_full[day.weekday()] in m[0]), None)
-        if match:
-            time_list = list(map(lambda x: x[1], re.findall(time_list_pattern, match[1])))
-            time_string = ';'.join(time_list).replace('.', ':')
-            time_list = get_time_list(time_string, day)
-            info = DaySchedule(day, time_list)
-            schedule_list.append(info)
-    if arena_name is not None:
-        arena_schedule = ArenaSchedule(arena_name, schedule_list)
-        return arena_schedule
-    else:
-        return None
+    if matches:
+        for day in day_list:
+            match = next((m for m in matches if days_of_week_full[day.weekday()] in m[0]), None)
+            if match:
+                time_list = list(map(lambda x: x[1], re.findall(time_list_pattern, match[1])))
+                time_string = ';'.join(time_list).replace('.', ':')
+                time_list = get_time_list(time_string, day)
+                info = DaySchedule(day, time_list)
+                schedule_list.append(info)
+    return schedule_list
 
 
 def get_arena_schedule_list(html_list: List[BeautifulSoup]):
     arena_schedule_list = []
     for html_arena in html_list:
-        arena_day_schedule_list = get_day_schedule_list(html_arena)
-        if arena_day_schedule_list is not None:
-            arena_schedule_list.append(arena_day_schedule_list)
+        text_arena = get_text_arena(html_arena)
+        arena_name = find_out_arena_name(text_arena)
+        date_period = get_date_period(text_arena)
+        if date_period is not None:
+            arena_day_schedule_list = get_day_schedule_list(date_period, text_arena)
+            if arena_name is not None:
+                arena_schedule = ArenaSchedule(arena_name, arena_day_schedule_list)
+                arena_schedule_list.append(arena_schedule)
     return arena_schedule_list
 
 
