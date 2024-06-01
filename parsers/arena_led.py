@@ -12,6 +12,10 @@ from .utils.days_of_week_full import days_of_week_full
 from .classes.arena_name import Arena
 from .classes.arena_schedule import ArenaSchedule
 
+
+# TODO использовать get_date_period
+# TODO try execute
+
 arena_reducer_name = {
     'расписаниелед2': Arena.ARENA_LED_2,
     'расписаниелед3': Arena.ARENA_LED_3,
