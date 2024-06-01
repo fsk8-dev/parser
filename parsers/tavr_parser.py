@@ -42,7 +42,7 @@ def get_arena_schedule_list(time_list):
     return arena_schedule_list
 
 
-def get_date_period_local(schedule_table):
+def get_date_period(schedule_table):
     date_period_pattern = r'((\d{1,2})([а-я]{1,8}.*?))по((\d{1,2})([а-я]{1,8}.*?))'
     td_date = schedule_table.find('td', {'colspan': '7', 'style': 'text-align: center;'})
     td_text = td_date.text
@@ -64,7 +64,7 @@ def get_tavr_schedule_list():
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     schedule_table = soup.body.find('table',  height="290", width="700")
-    date_period = get_date_period_local(schedule_table)
+    date_period = get_date_period(schedule_table)
     if date_period:
         date_list = get_date_list(date_period['period_start'], date_period['period_end'])
         time_list = get_time_list(schedule_table, date_list)
