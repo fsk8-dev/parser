@@ -54,6 +54,7 @@ def get_date_period(text):
 
 def get_day_schedule_list(html_arena):
     schedule_list = []
+    date_period_pattern = r'((\d{2})([а-я]{1,8}.*?))по((\d{2})([а-я]{1,8}.*?))'
     day_pattern = r'([а-я]{5,11}.*\n(массовыекатания.*?\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*))'
     time_list_pattern = r'((\d{2}.\d{2}-\d{2}.\d{2}).*\n)'
     text_arena = get_text_arena(html_arena)

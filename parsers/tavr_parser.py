@@ -6,9 +6,10 @@ from .utils.get_time_obj import get_time_obj
 from .utils.get_time_string import get_time_string
 from parsers.classes.arena_name import Arena
 from parsers.classes.arena_schedule import ArenaSchedule
+from .utils.months_obj import months_obj
 from .utils.clean_from_space import clean_from_space
 from .utils.clean_from_row import clean_from_row
-from .utils.get_date_period import get_date_period
+from .utils.format_date_period import format_date_period
 from parsers.utils.get_date_list import get_date_list
 
 
@@ -42,11 +43,20 @@ def get_arena_schedule_list(time_list):
 
 
 def get_date_period_local(schedule_table):
+    date_period_pattern = r'((\d{1,2})([а-я]{1,8}.*?))по((\d{1,2})([а-я]{1,8}.*?))'
     td_date = schedule_table.find('td', {'colspan': '7', 'style': 'text-align: center;'})
     td_text = td_date.text
     date_string = clean_from_space(clean_from_row(td_text.replace('Расписание катаний', '')))
-    date_period = get_date_period(date_string)
-    return date_period
+    match = re.search(date_period_pattern, date_string)
+    if match:
+        month_period_start = months_obj[match[3]]
+        day_period_start = int(match[2])
+        month_period_end = months_obj[match[6]]
+        day_period_end = int(match[5])
+        date_period = format_date_period(month_period_start, day_period_start, month_period_end, day_period_end)
+        return date_period
+    else:
+        return None
 
 
 def get_tavr_schedule_list():

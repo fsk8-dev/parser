@@ -84,8 +84,8 @@ def init():
         with open('parser.log', 'a') as file:
             file.write(f'=========== {date_now} =========== \n')
 
-        insert_current_schedule(conn, get_arena_led_schedule_list)
         insert_current_schedule(conn, get_tavr_schedule_list)
+        insert_current_schedule(conn, get_arena_led_schedule_list)
         insert_current_schedule(conn, get_ice_palace_schedule_list)
         insert_current_schedule(conn, get_tr_schedule_list)
         insert_current_schedule(conn, get_stachek_iceberg_schedule_list)
