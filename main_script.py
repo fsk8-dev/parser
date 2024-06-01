@@ -13,6 +13,10 @@ from parsers.stachek_iceberg import get_stachek_iceberg_schedule_list
 from parsers.arena_led import get_arena_led_schedule_list
 from parsers.classes.arena_name import Arena
 
+
+# TODO: вынести запись лога в отдельную функцию
+
+
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
@@ -64,7 +68,12 @@ def encode_to_json(schedule):
 
 
 def insert_current_schedule(conn, get_schedule_func, sporttype_id=1):
-    schedule_arena_list = get_schedule_func()
+    try:
+        schedule_arena_list = get_schedule_func()
+    except Exception as e:
+        schedule_arena_list = None
+        # TODO: добавить логирование
+        print(e)
     for schedule_arena in schedule_arena_list:
         schedule = schedule_arena.arena_schedule
         arena_id = schedule_arena.arena_name
