@@ -81,6 +81,9 @@ def insert_current_schedule(conn, get_schedule_func, sporttype_id=1):
         request_insert_current_schedule(conn, sporttype_id, arena_id, json_schedule)
 
 
+
+
+
 def init():
     date_now = datetime.now().strftime('%d.%m.%Y %H:%M')
     dbname = os.getenv('SCHEDULE_DBNAME')
@@ -93,12 +96,12 @@ def init():
         with open('parser.log', 'a') as file:
             file.write(f'=========== {date_now} =========== \n')
 
+        insert_current_schedule(conn, get_jubi_schedule_list)
         insert_current_schedule(conn, get_arena_led_schedule_list)
         insert_current_schedule(conn, get_tavr_schedule_list)
         insert_current_schedule(conn, get_ice_palace_schedule_list)
         insert_current_schedule(conn, get_tr_schedule_list)
         insert_current_schedule(conn, get_stachek_iceberg_schedule_list)
-        insert_current_schedule(conn, get_jubi_schedule_list)
         insert_current_schedule(conn, get_kanon_schedule_list)
         conn.close()
 
