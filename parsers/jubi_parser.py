@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from .classes.day_schedule import DaySchedule
+from .classes.location_id import LocationId
 from .classes.arena_id import ArenaId
 from .classes.schedule_type import ScheduleType
 from .utils.months_obj import months_obj
@@ -44,7 +45,7 @@ def get_day_schedule_list(data_list):
 def get_arena_schedule_list(data_list):
     arena_schedule_list = []
     day_schedule_list = get_day_schedule_list(data_list)
-    arena_schedule_list.append(ArenaSchedule(Arena.JUBI_BASE, ArenaId.JUBI_BASE, ScheduleType.ICE_SKATING, day_schedule_list))
+    arena_schedule_list.append(ArenaSchedule(LocationId.JUBI, Arena.JUBI_BASE, ArenaId.JUBI_BASE, ScheduleType.ICE_SKATING, day_schedule_list))
     return arena_schedule_list
 
 
