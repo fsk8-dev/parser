@@ -1,4 +1,4 @@
-from typing import List
+import requests
 import mysql.connector
 import json
 import os
@@ -23,30 +23,16 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 
-def create_connection(dbname, user, password, host, port):
-    conn = None
-    try:
-        conn = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=dbname,
-            port=port
-        )
-        print('Connection successful')
-    except mysql.connector.Error as e:
-        print(e)
-    return conn
+def send_schedule(location_id: int, arena_schedule: dict):
+    url = 'https://schedule-api.fsk8.ru/api/location-schedules/update'
+    payload = arena_schedule
+    response = requests.post(f'{url}/{location_id}',  json=payload)
+    #  TODO: добавить логирование
 
 
-def send_schedule(location_id: int, arena_schedule: str):
-    test = 0
-
-
-def encode_to_json(arena_schedule: ArenaSchedule):
-    arena_schedule.sessionList = list(map(lambda x: x.startDate.isoformat(), arena_schedule.sessionList))
-    json_schedule = json.dumps(arena_schedule.__dict__)
-    return json_schedule
+def format_arena_schedule(arena_schedule: ArenaSchedule):
+    arena_schedule.sessionList = list(map(lambda x: {"startDate": x.startDate.isoformat()}, arena_schedule.sessionList))
+    return arena_schedule.__dict__
 
 
 def handle_schedule(get_schedule_func):
@@ -57,7 +43,7 @@ def handle_schedule(get_schedule_func):
         # TODO: добавить логирование
         print(e)
     for arena_schedule in arena_schedule_list:
-        json_schedule = encode_to_json(arena_schedule)
+        json_schedule = format_arena_schedule(arena_schedule)
         send_schedule(arena_schedule.locationId, json_schedule)
 
 
