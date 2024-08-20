@@ -2,23 +2,24 @@ from typing import List
 from .session import Session
 from .day_schedule import DaySchedule
 from .location_id import LocationId
-from .arena_name import Arena
+from .arena_name import ArenaName
 from .arena_id import ArenaId
 from .schedule_type import ScheduleType
 
 
 class ArenaSchedule:
     """
-    Represents a schedule for an arena.
+    Initialize the ArenaSchedule object with the provided parameters.
 
     Args:
-        arena_name (Arena): The name of the arena.
+        location_id (LocationId): The ID of the location.
+        arena_name (ArenaName): The name of the arena.
         arena_id (ArenaId): The ID of the arena.
         schedule_type_id (ScheduleType): The ID of the schedule type.
-        arena_schedule (List[DaySchedule]): The schedule for the arena.
+        day_schedule_list (List[DaySchedule]): List of day schedules for the arena.
     """
 
-    def __init__(self, location_id: LocationId, arena_name: Arena, arena_id: ArenaId, schedule_type_id: ScheduleType, day_schedule_list: List[DaySchedule]):
+    def __init__(self, location_id: LocationId, arena_name: ArenaName, arena_id: ArenaId, schedule_type_id: ScheduleType, day_schedule_list: List[DaySchedule]):
         # Assign the provided arena name, ID, and schedule type ID to the instance variables
         self.locationId = location_id.value
         self.arenaName = arena_name.value

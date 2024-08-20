@@ -4,21 +4,25 @@ import requests
 from bs4 import BeautifulSoup
 
 from .classes.day_schedule import DaySchedule
+from .classes.arena_name import ArenaName
+from .classes.arena_schedule import ArenaSchedule
+from .classes.date_period import DatePeriod
+from .classes.location_id import LocationId
+from .classes.arena_id import ArenaId
+from .classes.schedule_type import ScheduleType
+
 from .utils.get_time_list import get_time_list
 from .utils.format_date_period import format_date_period
 from .utils.clean_from_space import clean_from_space
 from .utils.create_day_list_from_period import create_day_list_from_period
 from .utils.months_obj import months_obj
 from .utils.days_of_week_full import days_of_week_full
-from .classes.arena_name import Arena
-from .classes.arena_schedule import ArenaSchedule
-from .classes.date_period import DatePeriod
 
 
-arena_reducer_name = {
-    'расписаниелед2': Arena.ARENA_LED_2,
-    'расписаниелед3': Arena.ARENA_LED_3,
-    'расписаниелед4': Arena.ARENA_LED_4
+arena_reducer_info = {
+    'расписаниелед2': {'locationId': LocationId.ARENA_LED_2, 'arenaName': ArenaName.ARENA_LED_2,  'arenaId': ArenaId.ARENA_LED_2},
+    'расписаниелед3': {'locationId': LocationId.ARENA_LED_3, 'arenaName': ArenaName.ARENA_LED_3,  'arenaId': ArenaId.ARENA_LED_3},
+    'расписаниелед4': {'locationId': LocationId.ARENA_LED_4, 'arenaName': ArenaName.ARENA_LED_4,  'arenaId': ArenaId.ARENA_LED_4}
 }
 
 
@@ -30,14 +34,14 @@ def get_text_arena(html_arena: BeautifulSoup):
     return clean_from_space(html_arena.text.lower())
 
 
-def find_out_arena_name(text_arena):
+def find_out_arena_info(text_arena):
     led_2_title = r'расписаниелед2'
     led_3_title = r'расписаниелед3'
     led_4_title = r'расписаниелед4'
     name_list = [led_2_title, led_3_title, led_4_title]
     for name in name_list:
         if name in text_arena:
-            return arena_reducer_name[name]
+            return arena_reducer_info[name]
     return None
 
 
@@ -78,12 +82,13 @@ def get_arena_schedule_list(html_list: List[BeautifulSoup]):
     arena_schedule_list = []
     for html_arena in html_list:
         text_arena = get_text_arena(html_arena)
-        arena_name = find_out_arena_name(text_arena)
+        arena_info = find_out_arena_info(text_arena)
         date_period = get_date_period(text_arena)
+
         if date_period is not None:
             arena_day_schedule_list = get_day_schedule_list(date_period, text_arena)
-            if arena_name is not None:
-                arena_schedule = ArenaSchedule(arena_name, arena_day_schedule_list)
+            if arena_info is not None:
+                arena_schedule = ArenaSchedule(arena_info['locationId'], arena_info['arenaName'], arena_info['arenaId'], ScheduleType.ICE_SKATING, arena_day_schedule_list)
                 arena_schedule_list.append(arena_schedule)
     return arena_schedule_list
 

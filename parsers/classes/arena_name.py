@@ -1,9 +1,9 @@
 from enum import Enum
 
 
-class Arena(Enum):
+class ArenaName(Enum):
     TR = 'Трудовые резервы'
-    JUBI_BASE = 'Юбилейный основной'
+    JUBI = 'Юбилейный'
     TAVR = 'Таврический сад'
     ICE_PALACE = 'Ледовый дворец'
     GRAND_KANON = 'Гранд Каньон Айс'

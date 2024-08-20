@@ -4,8 +4,11 @@ from .classes.day_schedule import DaySchedule
 from .utils.get_time_obj import get_time_obj
 from .vk_utils.get_post_list import get_post_list
 from .vk_utils.get_post import get_post
-from .classes.arena_name import Arena
+from .classes.arena_name import ArenaName
 from .classes.arena_schedule import ArenaSchedule
+from .classes.location_id import LocationId
+from .classes.arena_id import ArenaId
+from .classes.schedule_type import ScheduleType
 
 
 def get_day_schedule_list(text, sport_schedule_pattern):
@@ -34,7 +37,7 @@ def get_arena_schedule_list(post, skating_schedule_pattern):
         day_schedule_list = get_day_schedule_list(post, skating_schedule_pattern)
     else:
         day_schedule_list = []
-    arena_schedule = ArenaSchedule(Arena.STACHEK_ICEBERG, day_schedule_list)
+    arena_schedule = ArenaSchedule(LocationId.STACHEK_ICEBERG, ArenaName.STACHEK_ICEBERG, ArenaId.STACHEK_ICEBERG, ScheduleType.ICE_SKATING, day_schedule_list)
     arena_schedule_list.append(arena_schedule)
     return arena_schedule_list
 
@@ -48,4 +51,4 @@ def get_stachek_iceberg_schedule_list():
     return arena_schedule_list
 
 
-
+# TODO парсить чтобы час мог быть одной цифрой
