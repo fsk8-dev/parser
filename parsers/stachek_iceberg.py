@@ -12,7 +12,7 @@ from .classes.schedule_type import ScheduleType
 
 
 def get_day_schedule_list(text, sport_schedule_pattern):
-    time_pattern = r'\d{2}:\d{2}-\d{2}:\d{2}'
+    time_pattern = r'\d{1,2}:\d{2}-\d{2}:\d{2}'
     date_list = []
     day_schedule_list = []
     matches = re.findall(sport_schedule_pattern, text)
@@ -51,4 +51,4 @@ def get_stachek_iceberg_schedule_list():
     return arena_schedule_list
 
 
-# TODO парсить чтобы час мог быть одной цифрой
+
