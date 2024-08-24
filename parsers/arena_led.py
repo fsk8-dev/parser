@@ -46,14 +46,17 @@ def find_out_arena_info(text_arena):
 
 
 def get_date_period(text) -> Optional[DatePeriod]:
-    date_period_pattern = r'((\d{2})([а-я]{1,8}.*?))по((\d{2})([а-я]{1,8}.*?))'
+    date_period_pattern = r'расписаниел[её]д.*?\n(?:.*?\n)?с(\d{1,2})(?:-|\s*([а-я]{3,9})\s*по\s*)?(\d{1,2})([а-я]{3,9})'
     match = re.search(date_period_pattern, text)
     if match:
-        month_period_start = months_obj[match[3]]
-        day_period_start = int(match[2])
-        month_period_end = months_obj[match[6]]
-        day_period_end = int(match[5])
-        date_period = format_date_period(month_period_start, day_period_start, month_period_end, day_period_end)
+        day_start = int(match[1])
+        if match[2] is None:
+            month_start = months_obj[match[4]]
+        else:
+            month_start = months_obj[match[2]]
+        day_end = int(match[3])
+        month_end = months_obj[match[4]]
+        date_period = format_date_period(month_start, day_start, month_end, day_end)
         return date_period
     else:
         return None
@@ -106,4 +109,9 @@ def get_arena_led_schedule_list():
 
 # note pattern for allskates and hockey ([а-я]{5,11}(\d{1,2}.\d{1,2})\n(массовыекатания:\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*)?(часхоккея:\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*)?)
 # note pattern for day-schedule with date ([а-я]{5,11}(\d{1,2}.\d{1,2})\n(массовыекатания:\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*)?)
+# note date_period_pattern = r'((\d{2})([а-я]{1,8}.*?))по((\d{2})([а-я]{1,8}.*?))' из get_date_period
 
+    # date_period_pattern = r'расписаниел[её]д.*\n(?:.*\n)с?((\d{2})((?:[а-я]{1,8})?.*?))(?:по|-)((\d{2})([а-я]{1,8}.*?))'
+    # date_period_pattern = r'расписаниел[её]д.*?\n(?:.*?\n)?с(\d{1,2})(?:-|([а-я]{3,9})по)?(\d{1,2})([а-я]{3,9})'
+
+# расписаниел[её]д.*?\n(?:.*?\n)?с(\d{1,2})(?:-|\s*([а-я]{3,9})\s*по\s*)?(\d{1,2})([а-я]{3,9})
