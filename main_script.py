@@ -16,11 +16,6 @@ from parsers.arena_led import get_arena_led_schedule_list
 # TODO: вынести запись лога в отдельную функцию
 
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
-
-
 def send_schedule(location_id: int, arena_schedule: dict):
     url = 'https://schedule-api.fsk8.ru/api/location-schedules/update'
     payload = arena_schedule
@@ -56,3 +51,4 @@ def init():
 
 
 init()
+
