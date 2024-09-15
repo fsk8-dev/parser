@@ -1,7 +1,4 @@
 import requests
-import os
-
-from dotenv import load_dotenv
 
 from parsers.classes.arena_schedule import ArenaSchedule
 from parsers.arena_tr_parser import get_tr_schedule_list
