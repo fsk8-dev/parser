@@ -1,9 +1,6 @@
-from typing import List
-import mysql.connector
-import json
-import os
-from datetime import datetime
-from dotenv import load_dotenv
+import requests
+
+from parsers.classes.arena_schedule import ArenaSchedule
 from parsers.arena_tr_parser import get_tr_schedule_list
 from parsers.ice_palace_parser import get_ice_palace_schedule_list
 from parsers.jubi_parser import get_jubi_schedule_list
@@ -11,96 +8,44 @@ from parsers.kanon_parser import get_kanon_schedule_list
 from parsers.tavr_parser import get_tavr_schedule_list
 from parsers.stachek_iceberg import get_stachek_iceberg_schedule_list
 from parsers.arena_led import get_arena_led_schedule_list
-from parsers.classes.arena_name import Arena
 
 
 # TODO: вынести запись лога в отдельную функцию
 
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
+def send_schedule(location_id: int, arena_schedule: dict):
+    url = 'https://schedule-api.fsk8.ru/api/location-schedules/update'
+    payload = arena_schedule
+    response = requests.post(f'{url}/{location_id}',  json=payload)
+    #  TODO: добавить логирование
 
 
-def create_connection(dbname, user, password, host, port):
-    conn = None
+def format_arena_schedule(arena_schedule: ArenaSchedule):
+    arena_schedule.sessionList = list(map(lambda x: {"startDate": x.startDate.isoformat()}, arena_schedule.sessionList))
+    return arena_schedule.__dict__
+
+
+def handle_schedule(get_schedule_func):
     try:
-        conn = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=dbname,
-            port=port
-        )
-        print('Connection successful')
-    except mysql.connector.Error as e:
-        print(e)
-    return conn
-
-
-def request_insert_current_schedule(conn, sporttype_id: int, arena: Arena, schedule: str):
-    date_now = datetime.now().strftime('%d.%m.%Y %H:%M')
-    sql_insert_schedule = """
-    insert into CurrentSchedule (sporttype_id, arena_id, json_schedule)
-    values (%s, %s, %s)
-  """
-    try:
-        cur = conn.cursor()
-        cur.execute(sql_insert_schedule, (sporttype_id, arena.value, schedule))
-        conn.commit()
-        print(f'Arena: {arena.name} data successfully insert')
-        with open('parser.log', 'a') as file:
-            file.write(f'date: {date_now} Arena: {arena.name} data successfully insert \n')
-    except mysql.connector.Error as e:
-        print(e)
-        with open('parser.log', 'a') as file:
-            file.write(f'date: {date_now}{e} \n')
-
-
-def encode_to_json(schedule):
-    temp_list = []
-    for day_schedule in schedule:
-        day_schedule.day_date = day_schedule.day_date.isoformat()
-        day_schedule.day_time_list = list(map(lambda x: x.isoformat(), day_schedule.day_time_list))
-        temp_list.append(day_schedule.__dict__)
-    json_list = json.dumps(temp_list)
-    return json_list
-
-
-def insert_current_schedule(conn, get_schedule_func, sporttype_id=1):
-    try:
-        schedule_arena_list = get_schedule_func()
+        arena_schedule_list = get_schedule_func()
     except Exception as e:
-        schedule_arena_list = None
+        arena_schedule_list = []
         # TODO: добавить логирование
         print(e)
-    for schedule_arena in schedule_arena_list:
-        schedule = schedule_arena.arena_schedule
-        arena_id = schedule_arena.arena_name
-        json_schedule = encode_to_json(schedule)
-        request_insert_current_schedule(conn, sporttype_id, arena_id, json_schedule)
+    for arena_schedule in arena_schedule_list:
+        json_schedule = format_arena_schedule(arena_schedule)
+        send_schedule(arena_schedule.locationId, json_schedule)
 
 
 def init():
-    date_now = datetime.now().strftime('%d.%m.%Y %H:%M')
-    dbname = os.getenv('SCHEDULE_DBNAME')
-    user = os.getenv('SCHEDULE_USERNAME')
-    password = os.getenv('SCHEDULE_PASSWORD')
-    host = os.getenv('SCHEDULE_HOST')
-    port = 3306
-    conn = create_connection(dbname, user, password, host, port)
-    if conn is not None:
-        with open('parser.log', 'a') as file:
-            file.write(f'=========== {date_now} =========== \n')
-
-        insert_current_schedule(conn, get_arena_led_schedule_list)
-        insert_current_schedule(conn, get_tavr_schedule_list)
-        insert_current_schedule(conn, get_ice_palace_schedule_list)
-        insert_current_schedule(conn, get_tr_schedule_list)
-        insert_current_schedule(conn, get_stachek_iceberg_schedule_list)
-        insert_current_schedule(conn, get_jubi_schedule_list)
-        insert_current_schedule(conn, get_kanon_schedule_list)
-        conn.close()
+    handle_schedule(get_arena_led_schedule_list)
+    handle_schedule(get_stachek_iceberg_schedule_list)
+    handle_schedule(get_kanon_schedule_list)
+    handle_schedule(get_ice_palace_schedule_list)
+    handle_schedule(get_tavr_schedule_list)
+    handle_schedule(get_jubi_schedule_list)
+    handle_schedule(get_tr_schedule_list)
 
 
 init()
+

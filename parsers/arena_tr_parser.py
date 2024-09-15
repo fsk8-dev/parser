@@ -2,13 +2,18 @@ from typing import List
 import re
 from datetime import datetime
 from .classes.day_schedule import DaySchedule
+from parsers.classes.arena_name import ArenaName
+from parsers.classes.arena_schedule import ArenaSchedule
+from parsers.classes.location_id import LocationId
+from parsers.classes.arena_id import ArenaId
+from parsers.classes.schedule_type import ScheduleType
+
 from .utils.weekdays_obj import weekdays
 from .utils.get_time_list import get_time_list
 from parsers.vk_utils.get_post_list import get_post_list
 from parsers.vk_utils.get_post import get_post
 from parsers.vk_utils.get_date_list import get_date_list
-from parsers.classes.arena_name import Arena
-from parsers.classes.arena_schedule import ArenaSchedule
+
 
 
 class Schedule:
@@ -77,7 +82,7 @@ def get_arena_schedule_list(post, period_pattern):
         day_schedule_list = get_day_schedule_list(skating_string, date_list)
     else:
         day_schedule_list = []
-    arena_schedule = ArenaSchedule(Arena.TR, day_schedule_list)
+    arena_schedule = ArenaSchedule(LocationId.TR, ArenaName.TR_BASE, ArenaName.TR, day_schedule_list)
     arena_schedule_list.append(arena_schedule)
     return arena_schedule_list
 

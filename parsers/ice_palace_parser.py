@@ -4,11 +4,17 @@ from bs4 import BeautifulSoup
 import re
 from datetime import datetime
 from .classes.day_schedule import DaySchedule
+
+from parsers.classes.arena_name import ArenaName
+from parsers.classes.arena_schedule import ArenaSchedule
+from .classes.location_id import LocationId
+from .classes.arena_id import ArenaId
+from .classes.schedule_type import ScheduleType
+
 from .utils.months_obj import months_obj
 from .utils.get_time_list import get_time_list
 from .utils.clean_from_space import clean_from_space
-from parsers.classes.arena_name import Arena
-from parsers.classes.arena_schedule import ArenaSchedule
+
 
 
 def get_data_list(soup):
@@ -84,7 +90,7 @@ def get_day_schedule_list(data_list: List[str]):
 def get_arena_schedule_list(data_list: List[str]):
     arena_schedule_list = []
     day_schedule_list = get_day_schedule_list(data_list)
-    arena_schedule_list.append(ArenaSchedule(Arena.ICE_PALACE, day_schedule_list))
+    arena_schedule_list.append(ArenaSchedule(LocationId.ICE_PALACE, ArenaName.ICE_PALACE, ArenaId.ICE_PALACE, ScheduleType.ICE_SKATING, day_schedule_list))
     return arena_schedule_list
 
 

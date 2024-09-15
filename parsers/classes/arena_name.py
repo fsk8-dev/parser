@@ -1,13 +1,13 @@
 from enum import Enum
 
 
-class Arena(Enum):
-    TR = 1
-    JUBI_BASE = 8
-    TAVR = 5
-    ICE_PALACE = 6
-    GRAND_KANON = 7
-    STACHEK_ICEBERG = 9
-    ARENA_LED_2 = 10
-    ARENA_LED_3 = 11
-    ARENA_LED_4 = 12
+class ArenaName(Enum):
+    TR = 'Трудовые резервы'
+    JUBI = 'Юбилейный'
+    TAVR = 'Таврический сад'
+    ICE_PALACE = 'Ледовый дворец'
+    GRAND_KANON = 'Гранд Каньон Айс'
+    STACHEK_ICEBERG = 'Айсберг Арена'
+    ARENA_LED_2 = 'Арена Лед-2'
+    ARENA_LED_3 = 'Арена Лед-3'
+    ARENA_LED_4 = 'Арена Лед-4'
