@@ -48,7 +48,7 @@ def get_arena_schedule_list(time_list):
 
 
 def get_date_period(schedule_table):
-    date_period_pattern = r'((\d{1,2})([а-я]{1,8}.*?))по((\d{1,2})([а-я]{1,8}.*?))'
+    date_period_pattern = r'((\d{1,2})([а-я]{1,8}).*?)по((\d{1,2})([а-я]{1,8}.*?))'
     td_date = schedule_table.find('td', {'colspan': '7', 'style': 'text-align: center;'})
     td_text = td_date.text
     date_string = clean_from_space(clean_from_row(td_text.replace('Расписание катаний', '')))
@@ -77,3 +77,5 @@ def get_tavr_schedule_list():
     else:
         arena_schedule_list = get_arena_schedule_list([])
     return arena_schedule_list
+
+# ((\d{1,2})([а-я]{1,8}.*?))по((\d{1,2})([а-я]{1,8}.*?))
