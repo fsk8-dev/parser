@@ -46,7 +46,7 @@ def find_out_arena_info(text_arena):
 
 
 def get_date_period(text) -> Optional[DatePeriod]:
-    date_period_pattern = r'расписаниел[её]д.*?\n(?:.*?\n)?с(\d{1,2})(?:-|\s*([а-я]{3,9})\s*по\s*)?(\d{1,2})([а-я]{3,9})'
+    date_period_pattern = r'расписаниел[её]д.*?\n(?:.*?\n)?с(\d{1,2})(?:-|\s*([а-я]{3,9})?\s*по\s*)?(\d{1,2})([а-я]{3,9})'
     match = re.search(date_period_pattern, text)
     if match:
         day_start = int(match[1])
