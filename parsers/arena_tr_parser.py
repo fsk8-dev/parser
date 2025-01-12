@@ -82,13 +82,13 @@ def get_arena_schedule_list(post, period_pattern):
         day_schedule_list = get_day_schedule_list(skating_string, date_list)
     else:
         day_schedule_list = []
-    arena_schedule = ArenaSchedule(LocationId.TR, ArenaName.TR_BASE, ArenaName.TR, day_schedule_list)
+    arena_schedule = ArenaSchedule(LocationId.TR, ArenaName.TR, ArenaId.TR, ScheduleType.ICE_SKATING, day_schedule_list)
     arena_schedule_list.append(arena_schedule)
     return arena_schedule_list
 
 
 def get_tr_schedule_list():
-    period_pattern = r'(расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n))|расписание.*?(\d{2}\.\d{2})'
+    period_pattern = r'(расписание.*?(\d{2}\.\d{2})-?(\d{2}\.\d{2})?).*(?=\n)'
     post_list = get_post_list('arena_tr')
     post = get_post(post_list, period_pattern)
     arena_schedule_list = get_arena_schedule_list(post, period_pattern)
@@ -96,3 +96,4 @@ def get_tr_schedule_list():
 
 
 # ([а-яА-Я]{2}):(\d{1,2}:\d{2}-\d{1,2}:\d{2}[.,\n\r])*
+# (расписание.*((\d{2}\.\d{2})-(\d{2}\.\d{2})).*(?=\n))|расписание.*?(\d{2}\.\d{2})
