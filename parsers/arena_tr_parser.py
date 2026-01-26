@@ -15,7 +15,6 @@ from parsers.vk_utils.get_post import get_post
 from parsers.vk_utils.get_date_list import get_date_list
 
 
-
 class Schedule:
     def __init__(self, figure_skating, hockey):
         self.figure_skating = figure_skating

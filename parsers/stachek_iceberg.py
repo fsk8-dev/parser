@@ -48,6 +48,7 @@ def get_stachek_iceberg_schedule_list():
     post_list = get_post_list('icebergkatok')
     post = get_post(post_list, period_pattern)
     arena_schedule_list = get_arena_schedule_list(post, skating_schedule_pattern)
+    print(arena_schedule_list)
     return arena_schedule_list
 
 

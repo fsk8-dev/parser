@@ -38,13 +38,13 @@ def handle_schedule(get_schedule_func):
 
 
 def init():
-    handle_schedule(get_arena_led_schedule_list)
     handle_schedule(get_stachek_iceberg_schedule_list)
     handle_schedule(get_kanon_schedule_list)
     handle_schedule(get_ice_palace_schedule_list)
     handle_schedule(get_tavr_schedule_list)
     handle_schedule(get_jubi_schedule_list)
     handle_schedule(get_tr_schedule_list)
+    handle_schedule(get_arena_led_schedule_list)
 
 
 init()
