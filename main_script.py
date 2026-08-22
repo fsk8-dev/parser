@@ -1,6 +1,7 @@
 import requests
 
 from classes import ArenaSchedule
+
 from parsers.arena_tr_parser import get_tr_schedule_list
 from parsers.ice_palace_parser import get_ice_palace_schedule_list
 from parsers.kanon_parser import get_kanon_schedule_list
@@ -10,6 +11,8 @@ from parsers.arena_led import get_arena_led_schedule_list
 
 from parsers.JubiParser import create_jubi_location_parser
 jubi_location_parser = create_jubi_location_parser()
+from parsers.TaurideParser import create_tauride_location_parser
+tauride_location_parser = create_tauride_location_parser()
 
 
 # TODO: вынести запись лога в отдельную функцию
@@ -41,12 +44,12 @@ def handle_schedule(get_schedule_func):
 
 
 def init():
+    handle_schedule(tauride_location_parser.get_schedule)
     handle_schedule(jubi_location_parser.get_schedule)
     handle_schedule(get_stachek_iceberg_schedule_list)
     handle_schedule(get_kanon_schedule_list)
     handle_schedule(get_ice_palace_schedule_list)
     handle_schedule(get_tavr_schedule_list)
-    handle_schedule(get_tr_schedule_list)
     handle_schedule(get_arena_led_schedule_list)
 
 

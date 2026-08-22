@@ -8,4 +8,10 @@ class BaseScheduleParser(ABC):
 
     @abstractmethod
     def get_day_schedule_list(self) -> List[DaySchedule]:
+        """
+         Возвращает список расписаний по дням.
+         :return: список объектов DaySchedule, каждый из которых содержит
+                  дату дня (day_date) и список времён занятий (day_time_list).
+         :rtype: List[DaySchedule]
+         """
         pass
