@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def get_time_obj(time_string: str, date_obj: datetime) -> datetime or None:
+def get_time_obj(time_string: str, date_obj: datetime) -> datetime | None:
     """
     This function takes a time string and a date object as input and returns a datetime object.
     If the time string is not in the format 'HH:MM', it returns None.

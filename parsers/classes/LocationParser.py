@@ -1,28 +1,10 @@
-from abc import \
-    ABC, \
-    abstractmethod
-from typing import \
-    Dict, \
-    Any, \
-    Optional, \
-    List, Protocol
-import \
-    logging
-from datetime import \
-    datetime
-
+from typing import Dict, Any, Optional, List, Protocol
 from .ArenaId import ArenaId
 from .ArenaName import ArenaName
 from .LocationId import LocationId
 from .ScheduleType import ScheduleType
-from ..classes.DaySchedule import DaySchedule
+from .schedule_parser.BaseScheduleParser import BaseScheduleParser
 from ..classes.ArenaSchedule import ArenaSchedule
-
-
-class ScheduleParser(Protocol):
-    """Источник расписания. Первая реализация — подклассы ScheduleParserSite."""
-    def get_day_schedule_list(self) -> List[DaySchedule]:
-        ...
 
 class LocationParser:
     """
@@ -37,7 +19,7 @@ class LocationParser:
         location_id: LocationId,
         arena_name: ArenaName,
         arena_id: ArenaId,
-        parser: ScheduleParser,
+        parser: BaseScheduleParser,
         schedule_type: ScheduleType = ScheduleType.ICE_SKATING,
     ) -> None:
         self.location_id = location_id
