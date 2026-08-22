@@ -1,14 +1,13 @@
 import re
 from datetime import datetime
-from .classes.DaySchedule import DaySchedule
-from .utils.get_time_obj import get_time_obj
-from .vk_utils.get_post_list import get_post_list
-from .vk_utils.get_post import get_post
-from .classes.ArenaName import ArenaName
-from .classes.ArenaSchedule import ArenaSchedule
-from .classes.LocationId import LocationId
-from .classes.ArenaId import ArenaId
-from .classes.ScheduleType import ScheduleType
+from classes.DaySchedule import DaySchedule
+from src_utils.base_utils import get_time_obj
+from src_utils.vk_utils import get_post_list, get_post
+from classes import ArenaName
+from classes.ArenaSchedule import ArenaSchedule
+from classes import LocationId
+from classes.ArenaId import ArenaId
+from classes import ScheduleType
 
 
 def get_day_schedule_list(text, sport_schedule_pattern):

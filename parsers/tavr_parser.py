@@ -1,21 +1,17 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from .classes.DaySchedule import DaySchedule
-from parsers.classes.ArenaName import ArenaName
-from parsers.classes.ArenaSchedule import ArenaSchedule
-from .classes.LocationId import LocationId
-from .classes.ArenaId import ArenaId
-from .classes.ScheduleType import ScheduleType
+from classes.DaySchedule import DaySchedule
+from classes.ArenaName import ArenaName
+from classes import ArenaSchedule
+from classes import LocationId
+from classes.ArenaId import ArenaId
+from classes import ScheduleType
 
-from .utils.get_time_obj import get_time_obj
-from .utils.get_time_string import get_time_string
+from src_utils.base_utils import get_time_obj, clean_from_row, get_time_string, format_date_period, clean_from_space, \
+    months_obj
 
-from .utils.months_obj import months_obj
-from .utils.clean_from_space import clean_from_space
-from .utils.clean_from_row import clean_from_row
-from .utils.format_date_period import format_date_period
-from parsers.utils.get_date_list import get_date_list
+from src_utils.base_utils.get_date_list import get_date_list
 
 
 def get_time_list(schedule_table, date_list):

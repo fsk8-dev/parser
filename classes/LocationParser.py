@@ -1,10 +1,12 @@
 from typing import Dict, Any, Optional, List, Protocol
+
+from .ArenaSchedule import ArenaSchedule
 from .ArenaId import ArenaId
 from .ArenaName import ArenaName
 from .LocationId import LocationId
 from .ScheduleType import ScheduleType
 from .schedule_parser.BaseScheduleParser import BaseScheduleParser
-from ..classes.ArenaSchedule import ArenaSchedule
+
 
 class LocationParser:
     """

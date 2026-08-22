@@ -2,14 +2,14 @@ from datetime import datetime
 from typing import List
 from bs4 import Tag
 
-from parsers.classes.ArenaId import ArenaId
-from parsers.classes.ArenaName import ArenaName
-from parsers.classes.DaySchedule import DaySchedule
-from parsers.classes.LocationId import LocationId
-from parsers.classes.LocationParser import LocationParser
-from parsers.classes.schedule_parser.ScheduleParserSite import ScheduleParserSite
-from parsers.utils.get_time_obj import get_time_obj
-from parsers.utils.months_obj import months_obj
+from classes.ArenaId import ArenaId
+from classes.ArenaName import ArenaName
+from classes.DaySchedule import DaySchedule
+from classes.LocationId import LocationId
+from classes.LocationParser import LocationParser
+from classes.schedule_parser.ScheduleParserSite import ScheduleParserSite
+from src_utils.base_utils.get_time_obj import get_time_obj
+from src_utils.base_utils.months_obj import months_obj
 
 class JubiUtils:
     @staticmethod

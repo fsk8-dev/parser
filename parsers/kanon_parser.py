@@ -3,15 +3,14 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from datetime import datetime, timedelta
-from .classes.DaySchedule import DaySchedule
-from parsers.classes.ArenaName import ArenaName
-from parsers.classes.ArenaSchedule import ArenaSchedule
-from .classes.LocationId import LocationId
-from .classes.ArenaId import ArenaId
-from .classes.ScheduleType import ScheduleType
+from classes.DaySchedule import DaySchedule
+from classes.ArenaName import ArenaName
+from classes import ArenaSchedule
+from classes import LocationId
+from classes.ArenaId import ArenaId
+from classes import ScheduleType
 
-from .utils.get_time_obj import get_time_obj
-from .utils.get_time_string import get_time_string
+from src_utils.base_utils import get_time_obj, get_time_string
 
 
 def get_time_list(soup: BeautifulSoup, date_list: List[datetime]):

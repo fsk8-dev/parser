@@ -3,18 +3,15 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from datetime import datetime
-from .classes.DaySchedule import DaySchedule
+from classes.DaySchedule import DaySchedule
 
-from parsers.classes.ArenaName import ArenaName
-from parsers.classes.ArenaSchedule import ArenaSchedule
-from .classes.LocationId import LocationId
-from .classes.ArenaId import ArenaId
-from .classes.ScheduleType import ScheduleType
+from classes.ArenaName import ArenaName
+from classes import ArenaSchedule
+from classes import LocationId
+from classes.ArenaId import ArenaId
+from classes import ScheduleType
 
-from .utils.months_obj import months_obj
-from .utils.get_time_list import get_time_list
-from .utils.clean_from_space import clean_from_space
-
+from src_utils.base_utils import months_obj, get_time_list, clean_from_space
 
 
 def get_data_list(soup):
@@ -58,7 +55,7 @@ def get_day_list_from_date_period(date_string):
 def get_date(date_temp: str):
     temp_list = date_temp.split(' ')
     if len(temp_list) == 2:
-        return datetime(datetime.now().year, int(months_obj[temp_list[1]]),  int(temp_list[0]))
+        return datetime(datetime.now().year, int(months_obj[temp_list[1]]), int(temp_list[0]))
     else:
         return None
 

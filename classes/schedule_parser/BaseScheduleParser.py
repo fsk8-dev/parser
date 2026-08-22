@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from parsers.classes.DaySchedule import DaySchedule
+from classes.DaySchedule import DaySchedule
 
 
 class BaseScheduleParser(ABC):
