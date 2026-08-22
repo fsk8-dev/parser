@@ -1,5 +1,5 @@
 from datetime import datetime
-from ..classes.date_period import DatePeriod
+from ..classes.DatePeriod import DatePeriod
 
 
 def format_date_period(month_period_start: int, day_period_start: int, month_period_end: int, day_period_end: int) -> DatePeriod:

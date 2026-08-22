@@ -3,13 +3,13 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from datetime import datetime
-from .classes.day_schedule import DaySchedule
+from .classes.DaySchedule import DaySchedule
 
-from parsers.classes.arena_name import ArenaName
-from parsers.classes.arena_schedule import ArenaSchedule
-from .classes.location_id import LocationId
-from .classes.arena_id import ArenaId
-from .classes.schedule_type import ScheduleType
+from parsers.classes.ArenaName import ArenaName
+from parsers.classes.ArenaSchedule import ArenaSchedule
+from .classes.LocationId import LocationId
+from .classes.ArenaId import ArenaId
+from .classes.ScheduleType import ScheduleType
 
 from .utils.months_obj import months_obj
 from .utils.get_time_list import get_time_list

@@ -1,12 +1,12 @@
 from typing import List
 import re
 from datetime import datetime
-from .classes.day_schedule import DaySchedule
-from parsers.classes.arena_name import ArenaName
-from parsers.classes.arena_schedule import ArenaSchedule
-from parsers.classes.location_id import LocationId
-from parsers.classes.arena_id import ArenaId
-from parsers.classes.schedule_type import ScheduleType
+from .classes.DaySchedule import DaySchedule
+from parsers.classes.ArenaName import ArenaName
+from parsers.classes.ArenaSchedule import ArenaSchedule
+from parsers.classes.LocationId import LocationId
+from parsers.classes.ArenaId import ArenaId
+from parsers.classes.ScheduleType import ScheduleType
 
 from .utils.weekdays_obj import weekdays
 from .utils.get_time_list import get_time_list

@@ -1,6 +1,6 @@
 from typing import List, Literal
 from datetime import datetime
-from .day_schedule import DaySchedule
+from .DaySchedule import DaySchedule
 
 
 FIGURE_SKATING: Literal['figure_skating'] = 'figure_skating'

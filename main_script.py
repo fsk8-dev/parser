@@ -1,6 +1,6 @@
 import requests
 
-from parsers.classes.arena_schedule import ArenaSchedule
+from parsers.classes.ArenaSchedule import ArenaSchedule
 from parsers.arena_tr_parser import get_tr_schedule_list
 from parsers.ice_palace_parser import get_ice_palace_schedule_list
 from parsers.jubi_parser import get_jubi_schedule_list

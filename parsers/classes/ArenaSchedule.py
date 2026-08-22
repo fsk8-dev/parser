@@ -1,10 +1,10 @@
 from typing import List
-from .session import Session
-from .day_schedule import DaySchedule
-from .location_id import LocationId
-from .arena_name import ArenaName
-from .arena_id import ArenaId
-from .schedule_type import ScheduleType
+from .Session import Session
+from .DaySchedule import DaySchedule
+from .LocationId import LocationId
+from .ArenaName import ArenaName
+from .ArenaId import ArenaId
+from .ScheduleType import ScheduleType
 
 
 class ArenaSchedule:
