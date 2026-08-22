@@ -16,13 +16,21 @@ def get_day_schedule_list(text, sport_schedule_pattern):
     date_list = []
     day_schedule_list = []
     matches = re.findall(sport_schedule_pattern, text)
+    print('matches: ', matches)
     if matches:
         for match in matches:
+            print(
+                'match: ',
+                match)
             time_list = []
             practice_date = datetime.strptime(f'{match[0]}.{datetime.now().year}', '%d.%m.%Y')
+            print('practice_date: ', practice_date)
             date_list.append(practice_date)
             time_list_raw = match[1].split('\n')
+            print('time_list_raw: ', time_list_raw)
             for time in time_list_raw:
+                print('time: ', time)
+                print('re.search(time_pattern, time): ', re.search(time_pattern, time))
                 if re.search(time_pattern, time):
                     time_current_list = time.split('-')
                     time_obj = get_time_obj(time_current_list[0], practice_date)

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class ScheduleParser(ABC):
+class BaseScheduleParser(ABC):
 
     @abstractmethod
     def get_schedule(self):

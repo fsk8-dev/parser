@@ -28,6 +28,7 @@ def format_arena_schedule(arena_schedule: ArenaSchedule):
 def handle_schedule(get_schedule_func):
     try:
         arena_schedule_list = get_schedule_func()
+        print('arena_schedule_list: ', arena_schedule_list)
     except Exception as e:
         arena_schedule_list = []
         # TODO: добавить логирование

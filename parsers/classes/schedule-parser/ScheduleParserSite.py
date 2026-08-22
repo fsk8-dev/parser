@@ -3,14 +3,14 @@ from typing import Literal
 from bs4 import BeautifulSoup
 
 import requests
-from .base_parser import ScheduleParser
+from .BaseScheduleParser import BaseScheduleParser
 
 
 def _get_soup(response_data: str | bytes, parser_type: Literal['lxml', 'html.parser'] = 'lxml'):
     return BeautifulSoup(response_data, parser_type)
 
 
-class ScheduleParserSite(ScheduleParser, ABC):
+class ScheduleParserSite(BaseScheduleParser, ABC):
     pass
 
     @property
