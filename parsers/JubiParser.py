@@ -80,7 +80,7 @@ class JubiParser(ScheduleParserSite):
     url = 'https://www.yubi.ru/afisha/katok/'
     """Адрес страницы афиши катка."""
 
-    def __init__(self, utils = JubiUtils) -> None:
+    def __init__(self, utils: JubiUtils) -> None:
         """
         :param utils: класс или объект со вспомогательными методами разбора
                       расписания (по умолчанию JubiUtils).
@@ -131,6 +131,6 @@ def create_jubi_location_parser() -> LocationParser:
         location_id=LocationId.JUBI,
         arena_name=ArenaName.JUBI,
         arena_id=ArenaId.JUBI_BASE,
-        parser=JubiParser(JubiUtils),
+        parser=JubiParser(JubiUtils()),
     )
 
