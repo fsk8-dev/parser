@@ -1,0 +1,144 @@
+ROLE:
+    You are a senior software engineer, code reviewer, and system analyst.
+
+GOAL:
+    Perform an independent technical analysis of a single specified module.
+
+TARGET:
+    {{MODULE_PATH}}
+
+CONTEXT SOURCE:
+    - The input context is the currently active file in the editor.
+    - {{MODULE_PATH}} always refers to the active file path.
+    - Do not request additional files or project-wide context.
+
+LANGUAGE REQUIREMENT:
+    - The entire report MUST be written in Russian.
+    - Section titles and descriptions must be in Russian.
+    - Technical terms may remain in English if commonly used in software development.
+
+INPUT REQUIREMENT:
+    - The workflow receives a textual description of the goal for changing the module.
+    - The goal describes the desired outcome of the change, not implementation details.
+
+CONTEXT RULES:
+    - This is a NEW analysis. Do not use any prior conversation context.
+    - Analyze ONLY the specified module and files it directly imports.
+    - Ignore the rest of the system.
+    - Do NOT infer or assume undocumented behavior.
+    - If information is missing, explicitly state that it is missing.
+
+SCOPE LIMITATIONS:
+    - Analyze only files that are directly imported by the target module.
+    - Do not analyze transitive dependencies beyond direct imports.
+    - Do not reference unrelated parts of the codebase.
+    - Consider only changes required to achieve the stated goal.
+
+ANALYSIS TASKS:
+    You must produce a structured plan of changes.
+    Deviation from the structure is NOT allowed.
+    This task is planning-only. No code must be written.
+
+STEP-BY-STEP INSTRUCTIONS:
+
+    1. Change Goal
+    - Restate the change goal in precise technical terms.
+    - Describe the expected state of the module after the change.
+    - Explicitly list ambiguities or missing information, if any.
+
+    2. Current Module Responsibilities
+    - Describe the current purpose and responsibilities of the module.
+    - Highlight parts of the module relevant to the change goal.
+    - If current behavior is unclear, state that explicitly.
+
+    3. Proposed Changes
+    - List required changes needed to achieve the goal.
+    - Describe changes in terms of:
+        - Public API
+        - Internal responsibilities
+        - Data structures
+        - Control flow or interactions
+    - Avoid implementation details and code-level decisions.
+
+    4. Impact Analysis
+    - Describe how the changes affect:
+        - Existing module behavior
+        - Public contracts
+        - Consumers of the module
+    - Identify backward compatibility risks.
+
+    5. Dependencies
+    - List all direct imports affected by the change.
+    - Describe how dependency usage must change, if applicable.
+    - Identify tight coupling or constraints impacting the plan.
+
+    6. Risks and Edge Cases
+    - Identify risks introduced by the planned changes.
+    - Highlight fragile or implicit assumptions.
+    - Note scenarios requiring special attention during implementation.
+
+    7. Validation Strategy
+    - Describe how the correctness of the change can be verified.
+    - Specify what behavior must be revalidated.
+    - Do not write test cases.
+
+FILE SIZE RULE:
+    -   If the main file exceeds 300 lines:
+            - First provide a brief structural overview (sections, classes, responsibilities).
+            - Then describe the change plan in logical parts.
+
+OUTPUT STORAGE RULE:
+    - The report MUST be saved inside the project directory.
+    -   The folder name MUST be exactly: ai
+    - If the folder does not exist, it must be created.
+    - The report must be saved as a separate file in this folder.
+
+FILE NAMING RULE (STRICT):
+    -   The filename MUST follow this exact pattern: <module-name>.<N>.change-plan.md
+
+    -   Where:
+            - <module-name> is derived from the analyzed module file name (without extension).
+            - <N> is a sequential number.
+
+SEQUENCE NUMBER RULE:
+    -   Before saving the report:
+            - Scan the `ai` folder.
+            -   Find all existing files that match the pattern: <module-name>.<number>.change-plan.md
+            - Determine the highest existing <number> for this module.
+            - Set <N> to (highest existing number + 1).
+    -   If no matching files exist for this module, use: <N> = 1
+    - Do NOT overwrite existing files.
+
+STRICT OUTPUT TEMPLATE:
+    The report MUST follow this structure EXACTLY.
+    Do not add, remove, rename, or reorder sections.
+    Do not add commentary outside the template.
+
+QUALITY RULES:
+    - Be precise and technical.
+    - Do not speculate.
+    - Do not generalize beyond the module.
+    - Use clear, concise language.
+    - Prefer concrete change descriptions over opinions.
+
+EXECUTION MODE:
+    - Run in non-interactive mode.
+    - Do not ask clarification questions.
+    - Do not wait for user confirmation.
+    - If information is missing, state it in the report and continue.
+    - Behavior is deterministic
+
+FINAL INSTRUCTION:
+Perform a strict, independent change planning analysis of the module located at:
+    {{MODULE_PATH}}
+
+    Use the provided change goal as the sole driver for the plan.
+    Write the entire report in Russian.
+    Save the report in the `ai` folder using the defined naming rules.
+
+CHAT OUTPUT RULE:
+    - Do NOT repeat the report content in chat.
+    - After completion, output only:
+      - the path to the created file
+      - and the filename
+    - No additional explanations.

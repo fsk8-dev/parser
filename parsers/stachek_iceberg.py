@@ -1,28 +1,35 @@
 import re
 from datetime import datetime
-from .classes.day_schedule import DaySchedule
-from .utils.get_time_obj import get_time_obj
-from .vk_utils.get_post_list import get_post_list
-from .vk_utils.get_post import get_post
-from .classes.arena_name import ArenaName
-from .classes.arena_schedule import ArenaSchedule
-from .classes.location_id import LocationId
-from .classes.arena_id import ArenaId
-from .classes.schedule_type import ScheduleType
+from classes.DaySchedule import DaySchedule
+from src_utils.base_utils import get_time_obj
+from src_utils.vk_utils import get_post_list, get_post
+from classes import ArenaName
+from classes.ArenaSchedule import ArenaSchedule
+from classes import LocationId
+from classes.ArenaId import ArenaId
+from classes import ScheduleType
 
 
 def get_day_schedule_list(text, sport_schedule_pattern):
-    time_pattern = r'\d{1,2}:\d{2}-\d{2}:\d{2}'
+    time_pattern = r'\d{1,2}:\d{2}-\d{1,2}:\d{2}'
     date_list = []
     day_schedule_list = []
     matches = re.findall(sport_schedule_pattern, text)
+    print('matches: ', matches)
     if matches:
         for match in matches:
+            print(
+                'match: ',
+                match)
             time_list = []
             practice_date = datetime.strptime(f'{match[0]}.{datetime.now().year}', '%d.%m.%Y')
+            print('practice_date: ', practice_date)
             date_list.append(practice_date)
             time_list_raw = match[1].split('\n')
+            print('time_list_raw: ', time_list_raw)
             for time in time_list_raw:
+                print('time: ', time)
+                print('re.search(time_pattern, time): ', re.search(time_pattern, time))
                 if re.search(time_pattern, time):
                     time_current_list = time.split('-')
                     time_obj = get_time_obj(time_current_list[0], practice_date)
@@ -48,6 +55,7 @@ def get_stachek_iceberg_schedule_list():
     post_list = get_post_list('icebergkatok')
     post = get_post(post_list, period_pattern)
     arena_schedule_list = get_arena_schedule_list(post, skating_schedule_pattern)
+    print(arena_schedule_list)
     return arena_schedule_list
 
 

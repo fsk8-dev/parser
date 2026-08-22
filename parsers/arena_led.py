@@ -3,21 +3,22 @@ from typing import List, Optional
 import requests
 from bs4 import BeautifulSoup
 
-from .classes.day_schedule import DaySchedule
-from .classes.arena_name import ArenaName
-from .classes.arena_schedule import ArenaSchedule
-from .classes.date_period import DatePeriod
-from .classes.location_id import LocationId
-from .classes.arena_id import ArenaId
-from .classes.schedule_type import ScheduleType
+from classes.ArenaName import ArenaName
+from classes.DaySchedule import DaySchedule
 
-from .utils.get_time_list import get_time_list
-from .utils.format_date_period import format_date_period
-from .utils.clean_from_space import clean_from_space
-from .utils.create_day_list_from_period import create_day_list_from_period
-from .utils.months_obj import months_obj
-from .utils.days_of_week_full import days_of_week_full
+from classes.ArenaSchedule import ArenaSchedule
+from classes.DatePeriod import DatePeriod
 
+from classes.ArenaId import ArenaId
+from classes import ScheduleType
+from classes.LocationId import LocationId
+from src_utils.base_utils.clean_from_space import clean_from_space
+from src_utils.base_utils.days_of_week_full import days_of_week_full
+from src_utils.base_utils.format_date_period import format_date_period
+
+from src_utils.base_utils.get_time_list import get_time_list
+from src_utils.base_utils.create_day_list_from_period import create_day_list_from_period
+from src_utils.base_utils.months_obj import months_obj
 
 arena_reducer_info = {
     'расписаниелед2': {'locationId': LocationId.ARENA_LED_2, 'arenaName': ArenaName.ARENA_LED_2,  'arenaId': ArenaId.ARENA_LED_2},
