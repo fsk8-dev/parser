@@ -24,16 +24,6 @@ class ScheduleParserSite(BaseScheduleParser, ABC):
     parser_type: Literal['lxml', 'html.parser'] = 'lxml'
     """Тип парсера BeautifulSoup, используемого для разбора HTML."""
 
-    @property
-    def url(self) -> str:
-        """
-        Адрес страницы с расписанием.
-
-        :return: URL страницы расписания.
-        :rtype: str
-        """
-        ...
-
     @abstractmethod
     def get_day_schedule_list(self) -> List[DaySchedule]:
         """
