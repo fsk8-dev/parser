@@ -1,10 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import requests
 
 from classes import ArenaSchedule
 
 from parsers.kanon_parser import get_kanon_schedule_list
 from parsers.tavr_parser import get_tavr_schedule_list
-from parsers.stachek_iceberg import get_stachek_iceberg_schedule_list
 from parsers.arena_led import get_arena_led_schedule_list
 
 from parsers.JubiParser import create_jubi_location_parser
@@ -15,6 +17,8 @@ from parsers.IcePalaceParser import create_ice_palace_location_parser
 ice_palace_location_parser = create_ice_palace_location_parser()
 from parsers.MagnitParser import create_magnit_arena_location_parser
 magnit_arena_location_parser = create_magnit_arena_location_parser()
+from parsers.StachekIcebergParser import create_stachek_iceberg_location_parser
+stachek_iceberg_location_parser = create_stachek_iceberg_location_parser()
 
 
 # TODO: вынести запись лога в отдельную функцию
@@ -46,11 +50,11 @@ def handle_schedule(get_schedule_func):
 
 
 def init():
+    handle_schedule(stachek_iceberg_location_parser.get_schedule)
     handle_schedule(magnit_arena_location_parser.get_schedule)
     handle_schedule(ice_palace_location_parser.get_schedule)
     handle_schedule(tauride_location_parser.get_schedule)
     handle_schedule(jubi_location_parser.get_schedule)
-    handle_schedule(get_stachek_iceberg_schedule_list)
     handle_schedule(get_kanon_schedule_list)
     handle_schedule(get_tavr_schedule_list)
     handle_schedule(get_arena_led_schedule_list)

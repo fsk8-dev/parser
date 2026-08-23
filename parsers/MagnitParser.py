@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 from typing import List
 
@@ -10,8 +9,8 @@ from classes.ArenaName import ArenaName
 from classes.DaySchedule import DaySchedule
 from classes.LocationId import LocationId
 from classes.LocationParser import LocationParser
-from classes.schedule_parser.ScheduleParserSite import ScheduleParserSite
-from src_utils.base_utils.DateCustomUtils import DateCustomUtils
+from classes.schedule_parser.SiteScheduleParser import SiteScheduleParser
+from src_utils.DateTimeCustomUtils import DateTimeCustomUtils
 
 
 class MagnitArenaUtils:
@@ -27,9 +26,9 @@ class MagnitArenaUtils:
     def get_day(data: Tag) -> datetime | None:
         raw = data.find('span', class_='t1118__title').text
         if raw:
-            date = DateCustomUtils.find_day_month_by_digits(raw)
+            date = DateTimeCustomUtils.find_day_month_by_digits(raw)
             if date:
-                return DateCustomUtils.parse_day_month(date)
+                return DateTimeCustomUtils.parse_day_month(date)
         return None
 
     @staticmethod
@@ -40,13 +39,13 @@ class MagnitArenaUtils:
         if raw_sessions:
             for session in raw_sessions:
                 time_str = session.get_text(strip=True).split('-')[0].strip()
-                time = DateCustomUtils.parse_hour_minute(time_str, date)
+                time = DateTimeCustomUtils.parse_hour_minute(time_str, date)
                 if time is not None:
                     result.append(time)
         return result
 
 
-class MagnitArenaParser(ScheduleParserSite):
+class MagnitArenaParser(SiteScheduleParser):
     url = 'https://magnit-arena.ru/'
 
     def __init__(self, utils: MagnitArenaUtils, container_id: str) -> None:
