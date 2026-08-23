@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class ArenaName(Enum):
-    TR = 'Трудовые резервы'
+    MAGNIT = 'Магнит Арена'
     JUBI = 'Юбилейный'
     TAVR = 'Таврический сад'
     ICE_PALACE = 'Ледовый дворец'

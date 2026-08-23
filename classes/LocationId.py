@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class LocationId(Enum):
-    TR = 5
+    MAGNIT = 5
     JUBI = 3
     TAVR = 7
     ICE_PALACE = 8

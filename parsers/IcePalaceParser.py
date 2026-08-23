@@ -2,6 +2,8 @@ import re
 from datetime import datetime
 from typing import List
 
+from bs4 import BeautifulSoup
+
 from classes.ArenaId import ArenaId
 from classes.ArenaName import ArenaName
 from classes.DaySchedule import DaySchedule
@@ -22,7 +24,7 @@ class IcePalaceUtils:
     """
 
     @staticmethod
-    def get_data_list(soup) -> List[str]:
+    def get_data_list(soup: BeautifulSoup) -> List[str]:
         data_list = []
         text = clean_from_space(soup.text)
         pattern = r'((\d{1,2}-)?\d{1,2}[а-яА-Я]{3,9}:(\d{1,2}\s*:\s*\d{2}-\d{1,2}\s*:\s*\d{2}\s*;?)*)'
@@ -144,6 +146,7 @@ class IcePalaceParser(ScheduleParserSite):
         date_string = self.utils.normalize_date_string(temp_list[0].strip())
         if date_string is None:
             return []
+
         if self.utils.is_date_period(date_string):
             day_list = self.utils.get_day_list_from_date_period(date_string)
         else:
