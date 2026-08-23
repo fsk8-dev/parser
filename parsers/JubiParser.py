@@ -7,7 +7,7 @@ from classes.ArenaName import ArenaName
 from classes.DaySchedule import DaySchedule
 from classes.LocationId import LocationId
 from classes.LocationParser import LocationParser
-from classes.schedule_parser.ScheduleParserSite import ScheduleParserSite
+from classes.schedule_parser.SiteScheduleParser import SiteScheduleParser
 from src_utils.base_utils.get_time_obj import get_time_obj
 from src_utils.base_utils.months_obj import months_obj
 
@@ -69,7 +69,7 @@ class JubiUtils:
                 time_list.append(time_obj)
         return time_list
 
-class JubiParser(ScheduleParserSite):
+class JubiParser(SiteScheduleParser):
     """
     Парсер расписания катка «Юбилейный».
 

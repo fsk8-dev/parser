@@ -10,7 +10,7 @@ from classes.DaySchedule import DaySchedule
 from classes.LocationId import LocationId
 from classes.LocationParser import LocationParser
 
-from classes.schedule_parser.ScheduleParserSite import ScheduleParserSite
+from classes.schedule_parser.SiteScheduleParser import SiteScheduleParser
 from src_utils.base_utils.get_time_obj import get_time_obj
 
 
@@ -89,7 +89,7 @@ class TaurideUtils:
                 time_list.append(time_obj)
         return sorted(time_list)
 
-class TaurideParser(ScheduleParserSite):
+class TaurideParser(SiteScheduleParser):
     """
     Парсер расписания массовых катаний катка «Таврический сад».
 

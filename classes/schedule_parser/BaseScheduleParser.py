@@ -8,9 +8,9 @@ class BaseScheduleParser(ABC):
     @property
     def url(self) -> str:
         """
-        Адрес страницы с расписанием.
+        Адрес страницы.
 
-        :return: URL страницы расписания.
+        :return: URL страницы.
         :rtype: str
         """
         ...

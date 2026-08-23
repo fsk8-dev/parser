@@ -9,7 +9,7 @@ from classes.ArenaName import ArenaName
 from classes.DaySchedule import DaySchedule
 from classes.LocationId import LocationId
 from classes.LocationParser import LocationParser
-from classes.schedule_parser.ScheduleParserSite import ScheduleParserSite
+from classes.schedule_parser.SiteScheduleParser import SiteScheduleParser
 from src_utils.base_utils.clean_from_space import clean_from_space
 from src_utils.base_utils.get_time_list import get_time_list
 from src_utils.base_utils.months_obj import months_obj
@@ -103,7 +103,7 @@ class IcePalaceUtils:
             return None
         return ' '.join([matches[0][0], matches[0][1]])
 
-class IcePalaceParser(ScheduleParserSite):
+class IcePalaceParser(SiteScheduleParser):
     """
     Парсер расписания «Ледового дворца».
     Загружает страницу :attr:`url` и формирует список расписаний по дням

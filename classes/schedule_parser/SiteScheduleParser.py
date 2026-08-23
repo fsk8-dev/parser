@@ -12,7 +12,7 @@ from ..DaySchedule import DaySchedule
 #  - utils.self.utils.get_date(day) и
 #  - utils.get_time_list(sessions, day_date)
 
-class ScheduleParserSite(BaseScheduleParser, ABC):
+class SiteScheduleParser(BaseScheduleParser, ABC):
     """
     Абстрактный базовый класс парсера расписания, получающего данные с сайта.
 
