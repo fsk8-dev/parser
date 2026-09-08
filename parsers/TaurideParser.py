@@ -66,7 +66,7 @@ class TaurideUtils:
         return datetime(year, month, day)
 
     @staticmethod
-    def get_time_list(cells, date) -> list:
+    def get_time_list(cells, date) -> List[datetime]:
         """
         Извлекает отсортированный список времён начала сеансов из ячеек.
 
