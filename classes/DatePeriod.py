@@ -6,16 +6,16 @@ class DatePeriod:
     Represents a period of time with a start and end date.
 
     Args:
-        period_start (datetime): The start date of the period.
-        period_end (datetime): The end date of the period.
+        start (datetime): The start date of the period.
+        end (datetime): The end date of the period.
     """
-    def __init__(self, period_start: datetime, period_end: datetime):
+    def __init__(self, start: datetime, end: datetime):
         """
         Initializes a DatePeriod object with the given start and end dates.
 
         Args:
-            period_start (datetime): The start date of the period.
-            period_end (datetime): The end date of the period.
+            start (datetime): The start date of the period.
+            end (datetime): The end date of the period.
         """
-        self.period_start = period_start
-        self.period_end = period_end
+        self.start = start
+        self.end = end

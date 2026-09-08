@@ -9,6 +9,7 @@ import requests
 from src_utils.DateTimeCustomUtils import DateTimeCustomUtils
 from src_utils.TextUtils import TextUtils
 from .BaseScheduleParser import BaseScheduleParser
+from ..DatePeriod import DatePeriod
 from ..DaySchedule import DaySchedule
 
 
@@ -108,10 +109,29 @@ class VKScheduleParser(BaseScheduleParser, ABC):
 
         result = []
         for post_text in post_list_filtered:
-            date_period = DateTimeCustomUtils.get_date_list(post_text, period_pattern)
-            if date_now in date_period or date_next_week in date_period:
+            date_list = self._get_date_period_list(post_text, period_pattern)
+            if date_now in date_list or date_next_week in date_list:
                 result.append(post_text)
         return result
+
+    def _get_date_period_list(self, text: str, period_pattern: str) -> List[datetime]:
+        date_period = self._get_schedule_date_period(text, period_pattern)
+        if date_period is None:
+            return []
+        return DateTimeCustomUtils.create_day_list_from_period(date_period.start, date_period.end)
+
+    def _get_schedule_date_period(self, text: str, period_pattern: str) -> DatePeriod | None:
+        current_year = str(datetime.now().year)
+        format_pattern = '%d.%m.%Y'
+        match = re.search(period_pattern, text, re.IGNORECASE)
+        if match:
+            start_date = datetime.strptime(f'{match.group(2)}.{current_year}', format_pattern)
+            if match.group(3):
+                end_date = datetime.strptime(match.group(3) + '.' + current_year, format_pattern)
+            else:
+                end_date = start_date
+            return DatePeriod(start_date, end_date)
+        return None
 
     @staticmethod
     def _clear_text(text: str) -> str:

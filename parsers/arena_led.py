@@ -68,7 +68,7 @@ def get_day_schedule_list(date_period: DatePeriod, text_arena: str):
     day_pattern = r'([а-я]{5,11}.*\n(.*?массовыекатания.*?\n(\d{2}.\d{2}-\d{2}.\d{2}.*\n)*))'
     time_list_pattern = r'((\d{2}.\d{2}-\d{2}.\d{2}).*\n)'
 
-    day_list = create_day_list_from_period(date_period.period_start, date_period.period_end)
+    day_list = create_day_list_from_period(date_period.start, date_period.end)
     matches = re.findall(day_pattern, text_arena)
     if matches:
         for day in day_list:

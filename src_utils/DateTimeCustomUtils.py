@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+from typing import List
 
 
 class DateTimeCustomUtils:
@@ -41,19 +42,23 @@ class DateTimeCustomUtils:
             return None
 
     @staticmethod
-    def get_date_list(text: str, period_pattern: str):
-        date_list = []
-        current_year = str(datetime.now().year)
-        format_pattern = '%d.%m.%Y'
-        match = re.search(period_pattern, text, re.IGNORECASE)
-        if match:
-            start_date = datetime.strptime(f'{match.group(2)}.{current_year}', format_pattern)
-            if match.group(3):
-                end_date = datetime.strptime(match.group(3) + '.' + current_year, format_pattern)
-            else:
-                end_date = start_date
-            current_date = start_date
-            while current_date <= end_date:
-                date_list.append(current_date)
-                current_date += timedelta(days=1)
-        return date_list
+    def create_day_list_from_period(period_start: datetime, period_end: datetime) -> List[datetime]:
+        """
+        Create a list of dates between the given period start and end dates.
+
+        Args:
+            period_start (datetime): The start date of the period.
+            period_end (datetime): The end date of the period.
+
+        Returns:
+            List[datetime]: A list of dates between the period start and end dates.
+        """
+        day_list = []
+        current_date = period_start
+
+        # Iterate over the dates within the period
+        while current_date <= period_end:
+            day_list.append(current_date)
+            current_date += timedelta(days=1)
+
+        return day_list
