@@ -53,7 +53,7 @@ class APLArenaParser(VKScheduleParser):
 
 def create_apla_location_parser() -> LocationParser:
     """
-    Создаёт LocationParser для катка «Центр спорта " АПЛ арена"».
+    Создаёт LocationParser для катка «Центр спорта "АПЛ арена"».
 
     :return: сконфигурированный LocationParser с APLArenaParser внутри.
     :rtype: LocationParser

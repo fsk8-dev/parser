@@ -6,8 +6,6 @@ import requests
 
 from classes import ArenaSchedule
 
-from parsers.arena_led import get_arena_led_schedule_list
-
 from parsers.JubiParser import create_jubi_location_parser
 
 jubi_location_parser = create_jubi_location_parser()
@@ -72,7 +70,6 @@ def init():
     handle_schedule(ice_palace_location_parser.get_schedule)
     handle_schedule(tauride_location_parser.get_schedule)
     handle_schedule(jubi_location_parser.get_schedule)
-    # handle_schedule(get_arena_led_schedule_list)
 
 
 init()
