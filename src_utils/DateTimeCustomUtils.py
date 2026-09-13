@@ -2,11 +2,23 @@ import re
 from datetime import datetime, timedelta
 from typing import List
 
+from src_utils.base_utils.months_ru_genitive import MONTHS_RU_GENITIVE
+
 
 class DateTimeCustomUtils:
     @staticmethod
     def parse_day_month(date: str) -> datetime:
         day, month = map(int, date.split('.'))  # "17.08"
+        year = datetime.now().year
+        if month < datetime.now().month:
+            year += 1
+        return datetime(year, month, day)
+
+    @staticmethod
+    def parse_day_month_genitive(date: str) -> datetime:
+        day, month = date.split(' ')  # "17 января"
+        day = int(day)
+        month = MONTHS_RU_GENITIVE[month]
         year = datetime.now().year
         if month < datetime.now().month:
             year += 1

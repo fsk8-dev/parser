@@ -9,7 +9,7 @@ from classes.LocationId import LocationId
 from classes.LocationParser import LocationParser
 from classes.schedule_parser.SiteScheduleParser import SiteScheduleParser
 from src_utils.base_utils.get_time_obj import get_time_obj
-from src_utils.base_utils.months_obj import months_obj
+from src_utils.base_utils.months_ru_genitive import MONTHS_RU_GENITIVE
 
 class JubiUtils:
     """
@@ -37,7 +37,7 @@ class JubiUtils:
         date_raw = data.find('div', class_='date')
         date_list = date_raw.string.lower().split(' ')
         if len(date_list) > 1:
-            month = months_obj[date_list[1]]
+            month = MONTHS_RU_GENITIVE[date_list[1]]
             day = int(date_list[0])
             date_object = datetime(datetime.now().year, month, day)
             return date_object

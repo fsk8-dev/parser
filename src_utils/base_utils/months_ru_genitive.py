@@ -1,4 +1,4 @@
-months_obj = {
+MONTHS_RU_GENITIVE = {
     'января': 1,
     'февраля': 2,
     'марта': 3,

@@ -34,6 +34,9 @@ from parsers.GrandCanyonParser import create_grand_canyon_location_parser
 
 grand_canyon_location_parser = create_grand_canyon_location_parser()
 
+from parsers.GololedParser import create_gololed_location_parser
+gololed_location_parser = create_gololed_location_parser()
+
 
 # TODO: вынести запись лога в отдельную функцию
 
@@ -64,6 +67,7 @@ def handle_schedule(get_schedule_func):
 
 
 def init():
+    handle_schedule(gololed_location_parser.get_schedule)
     handle_schedule(grand_canyon_location_parser.get_schedule)
     handle_schedule(stachek_iceberg_location_parser.get_schedule)
     handle_schedule(magnit_arena_location_parser.get_schedule)
