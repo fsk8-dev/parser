@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 
+from classes.LocationParser import LocationParser
+
 load_dotenv()
 
 import requests
 
-from classes import ArenaSchedule
+from classes.ArenaSchedule import ArenaSchedule
 
 from parsers.JubiParser import create_jubi_location_parser
 
@@ -34,8 +36,9 @@ from parsers.GrandCanyonParser import create_grand_canyon_location_parser
 
 grand_canyon_location_parser = create_grand_canyon_location_parser()
 
-from parsers.GololedParser import create_gololed_location_parser
-gololed_location_parser = create_gololed_location_parser()
+from parsers.GololedParser import create_gololed_location_hockey_parser, create_gololed_location_figure_skating_parser
+gololed_location_figure_skating_parser = create_gololed_location_figure_skating_parser()
+gololed_location_hockey_parser = create_gololed_location_hockey_parser()
 
 
 # TODO: вынести запись лога в отдельную функцию
@@ -53,10 +56,10 @@ def format_arena_schedule(arena_schedule: ArenaSchedule):
     return arena_schedule.__dict__
 
 
-def handle_schedule(get_schedule_func):
+def handle_schedule(arena: LocationParser):
     try:
-        arena_schedule_list = get_schedule_func()
-        print('arena_schedule_list: ', arena_schedule_list)
+        arena_schedule_list = arena.get_schedule()
+        print('arena_schedule_list: ', arena.arena_name)
     except Exception as e:
         arena_schedule_list = []
         # TODO: добавить логирование
@@ -67,13 +70,14 @@ def handle_schedule(get_schedule_func):
 
 
 def init():
-    handle_schedule(gololed_location_parser.get_schedule)
-    handle_schedule(grand_canyon_location_parser.get_schedule)
-    handle_schedule(stachek_iceberg_location_parser.get_schedule)
-    handle_schedule(magnit_arena_location_parser.get_schedule)
-    handle_schedule(ice_palace_location_parser.get_schedule)
-    handle_schedule(tauride_location_parser.get_schedule)
-    handle_schedule(jubi_location_parser.get_schedule)
+    handle_schedule(gololed_location_figure_skating_parser)
+    handle_schedule(gololed_location_hockey_parser)
+    handle_schedule(grand_canyon_location_parser)
+    handle_schedule(stachek_iceberg_location_parser)
+    handle_schedule(magnit_arena_location_parser)
+    handle_schedule(ice_palace_location_parser)
+    handle_schedule(tauride_location_parser)
+    handle_schedule(jubi_location_parser)
 
 
 init()

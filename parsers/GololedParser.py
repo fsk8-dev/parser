@@ -37,15 +37,15 @@ class GololedUtils:
 
 class GololedParser(SiteScheduleParser):
     url = 'https://gololed.spb.ru/'
-    activity_slag = 'massovoe_katanie'
 
-    def __init__(self, utils: GololedUtils) -> None:
+    def __init__(self, utils: GololedUtils, activity_slag: str) -> None:
         """
         :param utils: класс или объект со вспомогательными методами разбора
                       расписания (по умолчанию GololedUtils).
         :type utils: GololedUtils
         """
         self.utils = utils
+        self.activity_slag = activity_slag
 
     def get_day_schedule_list(self) -> List[DaySchedule]:
         soup = self._get_soup()
@@ -70,7 +70,7 @@ class GololedParser(SiteScheduleParser):
         return DaySchedule(date, sessions)
 
 
-def create_gololed_location_parser() -> LocationParser:
+def create_gololed_location_figure_skating_parser() -> LocationParser:
     """
     Создаёт LocationParser для катка «Гололед».
 
@@ -81,5 +81,19 @@ def create_gololed_location_parser() -> LocationParser:
         location_id=LocationId.GOLOLED,
         arena_name=ArenaName.GOLOLED,
         arena_id=ArenaId.GOLOLED,
-        parser=GololedParser(GololedUtils)
+        parser=GololedParser(GololedUtils(), 'massovoe_katanie')
+    )
+
+def create_gololed_location_hockey_parser() -> LocationParser:
+    """
+    Создаёт LocationParser для катка «Гололед».
+
+    :return: сконфигурированный LocationParser с GololedParser внутри.
+    :rtype: LocationParser
+    """
+    return LocationParser(
+        location_id=LocationId.GOLOLED,
+        arena_name=ArenaName.GOLOLED,
+        arena_id=ArenaId.GOLOLED,
+        parser=GololedParser(GololedUtils(), 'chas_hokkeya')
     )

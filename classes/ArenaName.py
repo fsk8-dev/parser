@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ArenaName(Enum):
+class ArenaName(str, Enum):
     MAGNIT = 'Магнит Арена'
     JUBI = 'Юбилейный'
     TAVR = 'Таврический сад'

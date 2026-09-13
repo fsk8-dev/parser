@@ -8,6 +8,11 @@ from .ScheduleType import ScheduleType
 
 
 class ArenaSchedule:
+    locationId: int
+    arenaName: str
+    arenaId: int
+    scheduleTypeId: int
+    sessionList: List[Session]
     """
     Initialize the ArenaSchedule object with the provided parameters.
 
