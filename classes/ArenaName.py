@@ -9,6 +9,5 @@ class ArenaName(Enum):
     GRAND_KANON = 'Гранд Каньон Айс'
     STACHEK_ICEBERG = 'Айсберг Арена'
     APLA = 'Центр спорта АПЛ арена'
-    ARENA_LED_2 = 'Арена Лед-2'
-    ARENA_LED_3 = 'Арена Лед-3'
-    ARENA_LED_4 = 'Арена Лед-4'
+    GOLOLED = 'Гололед'
+    SHUVALOV_ICE = 'Шуваловский лед'

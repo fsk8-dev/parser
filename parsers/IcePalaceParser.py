@@ -12,7 +12,7 @@ from classes.LocationParser import LocationParser
 from classes.schedule_parser.SiteScheduleParser import SiteScheduleParser
 from src_utils.base_utils.clean_from_space import clean_from_space
 from src_utils.base_utils.get_time_list import get_time_list
-from src_utils.base_utils.months_obj import months_obj
+from src_utils.base_utils.months_ru_genitive import MONTHS_RU_GENITIVE
 
 class IcePalaceUtils:
     """
@@ -62,7 +62,7 @@ class IcePalaceUtils:
         """
         temp_list = date_string.split(' ')
         if len(temp_list) == 2:
-            return datetime(datetime.now().year, months_obj[temp_list[1]], int(temp_list[0]))
+            return datetime(datetime.now().year, MONTHS_RU_GENITIVE[temp_list[1]], int(temp_list[0]))
         return None
 
     @staticmethod
@@ -79,7 +79,7 @@ class IcePalaceUtils:
         day_list = []
         temp_list = [item for item in date_string.replace('-', ' ').split(' ') if item != '']
         if len(temp_list) == 3:
-            month = months_obj[temp_list[2]]
+            month = MONTHS_RU_GENITIVE[temp_list[2]]
             for day in range(int(temp_list[0]), int(temp_list[1]) + 1):
                 day_list.append(datetime(datetime.now().year, month, day))
         return day_list
